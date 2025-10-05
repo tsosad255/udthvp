@@ -3,15 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Google Workspace – MCQ Quiz (Weighted)</title>
+<title>Google Workspace</title>
 <style>
-  :root{
-    --bg:#0f172a; --panel:#111827; --text:#e5e7eb; --muted:#94a3b8;
-    --accent:#22d3ee; --accent2:#60a5fa; --ok:#10b981; --bad:#ef4444; --warn:#f59e0b;
-  }
+  :root{ --bg:#0f172a; --panel:#111827; --text:#e5e7eb; --muted:#94a3b8; --accent:#22d3ee; --accent2:#60a5fa; --ok:#10b981; --bad:#ef4444; }
   *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:linear-gradient(180deg,#0b1220,#0f172a 35%,#0b1220);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
+  body{margin:0;background:linear-gradient(180deg,#0b1220,#0f172a 35%,#0b1220);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu}
   .container{max-width:980px;margin:24px auto;padding:20px}
   .card{background:rgba(17,24,39,.75);backdrop-filter:blur(6px);border:1px solid rgba(148,163,184,.15);border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
   h1{margin:0 0 6px;font-size:clamp(22px,3.6vw,34px)}
@@ -22,45 +18,34 @@
   button{appearance:none;border:1px solid transparent;background:var(--accent2);color:#081028;font-weight:700;padding:10px 14px;border-radius:12px;cursor:pointer;transition:.2s ease}
   button.secondary{background:transparent;border-color:rgba(148,163,184,.35);color:var(--text)}
   button:disabled{opacity:.55;cursor:not-allowed}
-
   .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin:6px 0 12px}
   .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .25s ease}
-
   .qwrap{border:1px solid rgba(148,163,184,.18);border-radius:14px;padding:16px;min-height:220px}
   .qwrap h3{margin:0 0 8px;font-size:1.02rem}
   .difficulty{font-size:.8rem;color:var(--muted)}
-
   .options{display:grid;gap:10px;margin-top:12px}
   label.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid rgba(148,163,184,.2);border-radius:12px;cursor:pointer;transition:.2s ease}
   label.opt:hover{border-color:var(--accent)}
   input[type=radio]{transform:translateY(2px)}
   .hint{color:var(--muted);font-size:.9rem;margin-top:8px}
-
   .result{margin-top:16px;padding:14px;border-radius:12px;background:rgba(96,165,250,.08);border:1px dashed rgba(96,165,250,.35)}
   .hidden{display:none!important}
-
   .review{margin-top:18px;display:grid;gap:14px}
   .rev-card{border:1px solid rgba(148,163,184,.2);border-radius:14px;padding:14px;background:rgba(17,24,39,.55)}
   .rev-title{margin:0 0 6px;font-size:1rem}
   .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;border:1px solid rgba(148,163,184,.3);color:var(--muted)}
   .pill.correct{border-color:rgba(16,185,129,.5);color:#c8ffe3}
   .pill.wrong{border-color:rgba(239,68,68,.6);color:#ffd2d2}
-  .explain{color:var(--muted);font-size:.95rem;margin-top:6px}
-
-  /* Lifeline modal */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:1000}
   .overlay.hidden{display:none!important}
   .modal{background:var(--panel);border:1px solid rgba(148,163,184,.25);border-radius:16px;padding:18px;max-width:520px;width:92%}
-  .modal h4{margin:0 0 8px}
-  .modal p{margin:8px 0 14px}
 </style>
 </head>
 <body>
   <div class="container">
     <div class="card">
       <h1>Google Workspace – MCQ Quiz</h1>
-      <p class="lead">Câu hỏi hiển thị <strong>lần lượt</strong>. Chọn đáp án để chuyển sang câu tiếp theo. Thứ tự câu và đáp án <strong>được xáo trộn</strong> mỗi lần mở. Điểm có trọng số theo phần: Phần A (1đ), Phần B (2đ), Phần C (3đ).</p>
-
+      <p class="lead">Câu hỏi hiển thị <strong>lần lượt</strong>. Chọn đáp án để chuyển sang câu tiếp theo. Thứ tự câu và đáp án <strong>được xáo trộn</strong>. Điểm: Phần A (1đ), Phần B (2đ), Phần C (3đ).</p>
       <div class="meta">
         <span class="badge">Phần A: 1đ • Phần B: 2đ • Phần C: 3đ</span>
         <span class="badge">Tổng điểm tối đa: <span id="totalPoints">—</span></span>
@@ -69,25 +54,17 @@
           <button id="resetBtn" class="secondary" type="button">Reset</button>
         </div>
       </div>
-
       <div class="progress" aria-label="progress"><div id="bar" class="bar"></div></div>
-
       <section id="qContainer" class="qwrap" aria-live="polite"></section>
-
       <div id="result" class="result hidden" role="status" aria-live="polite"></div>
-
       <div class="row hidden" id="reviewButtons" style="margin-top:10px">
         <button id="reviewIncorrectBtn" type="button" class="secondary">Xem lại câu sai</button>
         <button id="reviewAllBtn" type="button" class="secondary">Xem tất cả</button>
       </div>
-
       <section id="reviewPanel" class="review hidden" aria-label="Review"></section>
-
-      <p class="lead" style="margin-top:10px">Nguồn: Slide Google Workspace bạn cung cấp. Giải thích bám sát nội dung slide.</p>
+      <p class="lead" style="margin-top:10px">Cho mình xin 5l</p>
     </div>
   </div>
-
-  <!-- Lifeline Modal (Hỏi MVT) -->
   <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mvtTitle" aria-hidden="true">
     <div class="modal" role="document">
       <h4 id="mvtTitle">Hỏi MVT</h4>
@@ -97,32 +74,24 @@
       </div>
     </div>
   </div>
-
 <script>
 'use strict';
-// ===============================
-// Config (optional telemetry; leave empty to disable)
-// ===============================
-const TELEMETRY_ENDPOINT = '';
-const QUIZ_ID = 'workspace-mcq-v1';
-let runId = (self.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36)+Math.random().toString(36).slice(2));
+// ===== Root refs (DECLARE ONCE to avoid duplicate-const errors) =====
+const totalPointsEl = document.getElementById('totalPoints');
+const qContainer     = document.getElementById('qContainer');
+const bar            = document.getElementById('bar');
+const resultEl       = document.getElementById('result');
+const reviewBtns     = document.getElementById('reviewButtons');
+const reviewIncorrectBtn = document.getElementById('reviewIncorrectBtn');
+const reviewAllBtn   = document.getElementById('reviewAllBtn');
+const reviewPanel    = document.getElementById('reviewPanel');
+const resetBtn       = document.getElementById('resetBtn');
+const lifelineBtn    = document.getElementById('lifelineBtn');
+const overlay        = document.getElementById('overlay');
+const okMvt          = document.getElementById('okMvt');
 
-function sendAttempt(summary){
-  if(!TELEMETRY_ENDPOINT) return;
-  const payload = {
-    runId, quizId: QUIZ_ID, timestamp: new Date().toISOString(), pageUrl: location.href,
-    userAgent: navigator.userAgent, lifelineUsed,
-    earned: summary.earned, total: summary.total, percent: summary.percent, correctCount: summary.correctCount,
-    questionOrder: quiz.map(q=>q.id), detail: quiz.map(q=>({id:q.id, picked: (answers[q.id]??null), correctIndex:q.correctIndex, ok: summary.detail[q.id].isCorrect}))
-  };
-  fetch(TELEMETRY_ENDPOINT, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)}).catch(()=>{});
-}
-
-// ===============================
-// Data (10 câu; trọng số theo phần)
-// ===============================
+// ===== Data =====
 const baseQuiz = [
-  // Phần A – 1đ (easy)
   { id:'q1', section:'A', difficulty:'easy', weight:1,
     question:'Google Workspace là gì?',
     options:['Một hệ điều hành máy chủ của Google','Bộ công cụ văn phòng & cộng tác trên nền tảng đám mây','Trình duyệt web tối ưu cho Gmail','Một dịch vụ lưu trữ ảnh trực tuyến'],
@@ -134,250 +103,171 @@ const baseQuiz = [
     question:'Thành phần không thuộc nhóm “Công cụ giao tiếp” của Workspace là:',
     options:['Gmail','Google Meet','Google Chat','Google Sites'],
     correctIndex:3,
-    explainVI:'Nhóm giao tiếp gồm Gmail, Meet, Chat, Calendar; Sites thuộc nhóm tạo trang, không phải công cụ giao tiếp.',
-    explainEN:'Comms: Gmail/Meet/Chat/Calendar; Sites is for site building, not a communication tool.'
+    explainVI:'Giao tiếp: Gmail, Meet, Chat, Calendar; Sites thuộc nhóm tạo trang.',
+    explainEN:'Comms: Gmail/Meet/Chat/Calendar; Sites = site building.'
   },
   { id:'q3', section:'A', difficulty:'easy', weight:1,
     question:'Lợi ích không được nêu khi dùng Google Drive:',
     options:['Tiết kiệm dung lượng thiết bị','Hỗ trợ làm việc nhóm trên cùng tệp','Truy cập từ mọi nơi, quản lý tập trung','Chỉ lưu được tệp văn bản, không hỗ trợ đa định dạng'],
     correctIndex:3,
-    explainVI:'Drive lưu trữ nhiều loại tệp, tích hợp Docs/Sheets/Slides; không bị giới hạn chỉ văn bản.',
-    explainEN:'Drive supports many file types; not limited to text files.'
+    explainVI:'Drive hỗ trợ nhiều định dạng, không chỉ văn bản.',
+    explainEN:'Drive supports many file types.'
   },
   { id:'q4', section:'A', difficulty:'easy', weight:1,
     question:'Trong Google Docs, vai trò cho phép chỉ đọc là:',
     options:['Editor','Viewer','Commenter','Owner'],
     correctIndex:1,
-    explainVI:'Viewer (xem), Commenter (nhận xét), Editor (chỉnh sửa); phân quyền qua Share.',
-    explainEN:'Viewer is read-only; Commenter can comment; Editor can edit.'
+    explainVI:'Viewer (xem), Commenter (nhận xét), Editor (chỉnh sửa).',
+    explainEN:'Viewer is read-only.'
   },
   { id:'q5', section:'A', difficulty:'easy', weight:1,
     question:'Chế độ Suggesting (Đề xuất) trong Docs dùng để:',
     options:['Ẩn mọi thay đổi khỏi nhật ký phiên bản','Gợi ý chỉnh sửa để chủ tài liệu Accept/Reject','Khóa tài liệu không cho ai vào','Xuất trực tiếp sang PDF'],
     correctIndex:1,
-    explainVI:'Suggesting ghi nhận đề xuất; chủ tài liệu có thể chấp nhận/từ chối; theo dõi trong Version history.',
-    explainEN:'Proposes edits the owner can accept/reject; tracked in version history.'
+    explainVI:'Đề xuất thay đổi; chủ tài liệu Accept/Reject.',
+    explainEN:'Propose edits to accept/reject.'
   },
-  // Phần B – 2đ (medium)
   { id:'q6', section:'B', difficulty:'medium', weight:2,
     question:'Phân quyền phù hợp nhất cho quy trình biên soạn quy chế thư viện số là:',
-    options:['Thủ thư chính: Viewer; Cộng tác viên: Editor; GV/SV: Owner','Thủ thư chính: Editor; Cộng tác viên: Commenter; GV/SV: Viewer','Thủ thư chính: Commenter; Cộng tác viên: Viewer; GV/SV: Editor','Tất cả đều Editor để “dễ làm việc”'],
+    options:['Thủ thư chính: Viewer; CTV: Editor; GV/SV: Owner','Thủ thư chính: Editor; CTV: Commenter; GV/SV: Viewer','Thủ thư chính: Commenter; CTV: Viewer; GV/SV: Editor','Tất cả đều Editor để “dễ làm việc”'],
     correctIndex:1,
-    explainVI:'Kịch bản hợp lý: thủ thư cập nhật (Editor), CTV góp ý (Commenter), GV/SV đọc (Viewer).',
-    explainEN:'Librarian as Editor; collaborators Commenter; faculty/students Viewer.'
+    explainVI:'Thủ thư cập nhật (Editor), CTV góp ý (Commenter), GV/SV đọc (Viewer).',
+    explainEN:'Editor / Commenter / Viewer.'
   },
   { id:'q7', section:'B', difficulty:'medium', weight:2,
     question:'Theo slide, Gemini hỗ trợ trực tiếp tác vụ nào trong biên mục/siêu dữ liệu?',
-    options:['Quét mã vạch và gán chỉ số Cutter tự động','Đồng bộ bản ghi MARC21 vào Koha chỉ bằng một nút','Tóm tắt tài liệu & trích xuất tác giả, năm, từ khóa để tạo siêu dữ liệu nhất quán','Tạo tài khoản bạn đọc và cấp thẻ RFID'],
+    options:['Quét mã vạch & gán Cutter tự động','Đồng bộ MARC21 vào Koha chỉ bằng một nút','Tóm tắt tài liệu & trích xuất tác giả, năm, từ khóa','Tạo tài khoản bạn đọc & thẻ RFID'],
     correctIndex:2,
-    explainVI:'Gemini tóm tắt nhanh, trích xuất tác giả, năm, từ khóa → rút ngắn thời gian biên mục.',
-    explainEN:'Summarization and extracting authors/year/keywords to build consistent metadata.'
+    explainVI:'Gemini: tóm tắt + trích xuất tác giả, năm, từ khóa.',
+    explainEN:'Summarization and metadata extraction.'
   },
   { id:'q8', section:'B', difficulty:'medium', weight:2,
-    question:'Xây dựng hệ thống Hỏi–Đáp/FAQ thông minh theo quy trình gợi ý trong slide cần:',
-    options:['Google Forms + Sites, không cần dữ liệu','Google Sheets (dữ liệu) + Gemini (tạo nội dung) + AppSheet (giao diện/chatbot)','Google Photos + Meet','Chỉ cần Gmail và Calendar'],
+    question:'Xây dựng hệ thống FAQ thông minh theo quy trình gợi ý trong slide cần:',
+    options:['Forms + Sites','Sheets (dữ liệu) + Gemini (nội dung) + AppSheet (giao diện)','Photos + Meet','Chỉ Gmail và Calendar'],
     correctIndex:1,
-    explainVI:'Tạo dữ liệu Q&A trong Sheets, dùng Gemini sinh nội dung/biến thể, dựng AppSheet để truy vấn & trả lời.',
-    explainEN:'Sheets as data, Gemini to generate, AppSheet as UI/chatbot.'
+    explainVI:'Sheets dữ liệu, Gemini sinh nội dung, AppSheet làm UI.',
+    explainEN:'Sheets + Gemini + AppSheet.'
   },
-  // Phần C – 3đ (hard)
   { id:'q9', section:'C', difficulty:'hard', weight:3,
     question:'Tìm kiếm nào cho kết quả liên quan nhất với truy vấn dài trong Drive theo slide?',
-    options:['Tìm từng từ khóa rời rạc','Lọc theo dung lượng file lớn nhất','Dùng AI Semantic Search của Gemini trên Drive để hiểu ý định & khái niệm liên quan','Chỉ tìm trong tiêu đề file, bỏ qua nội dung'],
+    options:['Tìm từ khóa rời rạc','Lọc theo dung lượng lớn nhất','Dùng AI Semantic Search (Gemini) hiểu ý định & khái niệm liên quan','Chỉ tìm tiêu đề, bỏ nội dung'],
     correctIndex:2,
-    explainVI:'Tìm kiếm ngữ nghĩa theo ý định, nhận biết đồng nghĩa/ngữ cảnh, vượt trội so với keyword match.',
-    explainEN:'Use AI semantic search (Gemini) for intent, synonyms, and context.'
+    explainVI:'Tìm kiếm ngữ nghĩa theo ý định & đồng nghĩa.',
+    explainEN:'AI semantic search for intent/synonyms.'
   },
   { id:'q10', section:'C', difficulty:'hard', weight:3,
-    question:'Theo quy trình trong slide về phân tích & trực quan hóa dữ liệu thư viện bằng Gemini trong Sheets, yêu cầu nào phù hợp để nhận kết quả phân tích kèm biểu đồ?',
-    options:['Cho xem tất cả dữ liệu thô, không cần tổng hợp','Phân tích dữ liệu này và cho biết 5 thể loại mượn nhiều nhất quý 3; tạo một biểu đồ tròn minh họa.','Vẽ mọi biểu đồ có thể (không nêu mục tiêu)','Gửi email kết quả cho toàn bộ sinh viên'],
+    question:'Theo quy trình trong slide về phân tích & trực quan hóa dữ liệu bằng Gemini trong Sheets, yêu cầu nào phù hợp để nhận kết quả kèm biểu đồ?',
+    options:['Xem toàn bộ dữ liệu thô','Top 5 thể loại mượn nhiều nhất Q3; tạo biểu đồ tròn.','Vẽ mọi biểu đồ có thể','Gửi email cho toàn bộ sinh viên'],
     correctIndex:1,
-    explainVI:'Ví dụ lệnh: top 5 thể loại & vẽ biểu đồ (cũng có ví dụ xu hướng theo giờ + biểu đồ đường).',
-    explainEN:'Ask for top categories and request a chart (e.g., pie chart).'
+    explainVI:'Yêu cầu mục tiêu + yêu cầu biểu đồ.',
+    explainEN:'Ask for metric + chart.'
   }
 ];
 
-// Shuffle options per question
 const SHUFFLE_OPTIONS = true;
 
-// ===============================
-// Utilities
-// ===============================
-function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+// ===== Utils =====
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
-// ===============================
-// State
-// ===============================
+// ===== State =====
 let quiz = [];
 let current = 0;
-const answers = {}; // id -> pickedIndex (in displayed order)
+const answers = {}; // id -> displayed index
 let lifelineUsed = false;
 
-// UI refs
-const totalPointsEl = document.getElementById('totalPoints');
-const qContainer = document.getElementById('qContainer');
-const bar = document.getElementById('bar');
-const resultEl = document.getElementById('result');
-const reviewBtns = document.getElementById('reviewButtons');
-const reviewIncorrectBtn = document.getElementById('reviewIncorrectBtn');
-const reviewAllBtn = document.getElementById('reviewAllBtn');
-const reviewPanel = document.getElementById('reviewPanel');
-const resetBtn = document.getElementById('resetBtn');
-const lifelineBtn = document.getElementById('lifelineBtn');
-const overlay = document.getElementById('overlay');
-const okMvt = document.getElementById('okMvt');
-
 function totalPossiblePoints(){ return quiz.reduce((s,q)=>s+q.weight,0); }
-function renderProgress(){ bar.style.width = Math.round((current/quiz.length)*100) + '%'; }
+function renderProgress(){ bar.style.width = Math.round((current/quiz.length)*100)+'%'; }
 
 function renderQuestion(){
   renderProgress(); reviewPanel.classList.add('hidden'); reviewBtns.classList.add('hidden'); resultEl.classList.add('hidden');
-  const q = quiz[current]; const qNumber = current + 1; qContainer.innerHTML = '';
-
-  const title = document.createElement('h3');
-  title.innerHTML = `<span style="opacity:.9">Q${qNumber}/${quiz.length}</span> — ${q.question}`;
-  const diff = document.createElement('div'); diff.className = 'difficulty';
-  diff.textContent = `Phần ${q.section} • Difficulty: ${q.difficulty} • Weight: ${q.weight}`;
-
-  const opts = document.createElement('div'); opts.className = 'options';
+  const q = quiz[current]; const qn = current+1; qContainer.innerHTML='';
+  const h = document.createElement('h3'); h.innerHTML = `<span style="opacity:.9">Q${qn}/${quiz.length}</span> — ${q.question}`;
+  const d = document.createElement('div'); d.className = 'difficulty'; d.textContent = `Phần ${q.section} • Difficulty: ${q.difficulty} • Weight: ${q.weight}`;
+  const opts = document.createElement('div'); opts.className='options';
   q.choices.forEach((choice, oi)=>{
     const id = `${q.id}_${oi}`;
-    const label = document.createElement('label'); label.className = 'opt'; label.setAttribute('for', id);
-    const radio = document.createElement('input'); radio.type = 'radio'; radio.name = q.id; radio.id = id; radio.value = String(oi);
-    const text = document.createElement('div'); const letter = String.fromCharCode(65+oi);
-    text.innerHTML = `<strong>${letter}.</strong> ${choice.text}`;
-
-    radio.addEventListener('change', ()=>{
-      answers[q.id] = oi; // store picked displayed index
-      label.style.borderColor = 'var(--accent)';
-      setTimeout(()=>{ nextStep(); }, 200);
-    });
-
+    const label = document.createElement('label'); label.className='opt'; label.setAttribute('for', id);
+    const radio = document.createElement('input'); radio.type='radio'; radio.name=q.id; radio.id=id; radio.value=String(oi);
+    const text = document.createElement('div'); const letter=String.fromCharCode(65+oi); text.innerHTML = `<strong>${letter}.</strong> ${choice.text}`;
+    radio.addEventListener('change', ()=>{ answers[q.id]=oi; label.style.borderColor='var(--accent)'; setTimeout(nextStep, 180); });
     label.appendChild(radio); label.appendChild(text); opts.appendChild(label);
   });
-
-  qContainer.appendChild(title); qContainer.appendChild(diff); qContainer.appendChild(opts);
-  const hint = document.createElement('div'); hint.className = 'hint'; hint.textContent = 'Chọn đáp án để tiếp tục…';
-  qContainer.appendChild(hint);
+  qContainer.appendChild(h); qContainer.appendChild(d); qContainer.appendChild(opts);
+  const hint=document.createElement('div'); hint.className='hint'; hint.textContent='Chọn đáp án để tiếp tục…'; qContainer.appendChild(hint);
 }
 
 function scoreQuiz(){
-  let earned = 0, correctCount = 0; const detail = {};
+  let earned=0, correctCount=0; const detail={};
   quiz.forEach(q=>{
     const pick = answers[q.id];
-    const isCorrect = (pick !== undefined) && q.choices[pick] && q.choices[pick].isCorrect === true;
-    if(isCorrect){ earned += q.weight; correctCount++; }
-    detail[q.id] = { isCorrect, picked: pick ?? null, correctIndex: q.choices.findIndex(c=>c.isCorrect) };
+    const ok = (pick!==undefined) && q.choices[pick] && q.choices[pick].isCorrect===true;
+    if(ok){ earned+=q.weight; correctCount++; }
+    detail[q.id] = { isCorrect: ok, picked: pick ?? null, correctIndex: q.choices.findIndex(c=>c.isCorrect) };
   });
   const total = totalPossiblePoints(); const percent = Math.round(100*earned/total);
   return { earned, total, percent, correctCount, detail };
 }
 
 function finish(){
-  bar.style.width = '100%';
-  const summary = scoreQuiz();
-  // optional telemetry
-  sendAttempt(summary);
-
+  bar.style.width='100%';
+  const s=scoreQuiz();
   resultEl.classList.remove('hidden');
-  resultEl.innerHTML = `<div><strong>Tứ đại linh thú TEAM đã chấm cho bạn:</strong> ${summary.earned} điểm</div>
-    <div style="color:var(--muted)">Chi tiết: ${summary.earned} / ${summary.total} điểm (${summary.percent}%). Đúng: ${summary.correctCount}/${quiz.length}.</div>`;
+  resultEl.innerHTML = `<div><strong>Tứ đại linh thú TEAM đã chấm cho bạn:</strong> ${s.earned} điểm</div>
+    <div style="color:#94a3b8">Chi tiết: ${s.earned} / ${s.total} điểm (${s.percent}%). Đúng: ${s.correctCount}/${quiz.length}.</div>`;
   reviewBtns.classList.remove('hidden');
 }
 
 function buildReviewCards(filterFn){
-  reviewPanel.innerHTML = '';
-  const summary = scoreQuiz();
-  quiz.forEach((q, qi)=>{
-    const row = summary.detail[q.id]; if(!filterFn(row)) return;
-    const card = document.createElement('div'); card.className = 'rev-card';
-
-    const title = document.createElement('h4'); title.className = 'rev-title'; title.textContent = `Q${qi+1} — Phần ${q.section}`;
-    const status = document.createElement('div'); status.innerHTML = row.isCorrect ? '<span class="pill correct">Correct</span>' : '<span class="pill wrong">Incorrect</span>';
-
-    const userPickIdx = row.picked;
-    const userPickTxt = (userPickIdx!==null && userPickIdx!==undefined) ? `${String.fromCharCode(65+userPickIdx)}. ${q.choices[userPickIdx].text}` : '— (chưa chọn)';
-    const correctIdx = row.correctIndex;
-    const correctTxt = `${String.fromCharCode(65+correctIdx)}. ${q.choices[correctIdx].text}`;
-
-    const picked = document.createElement('div'); picked.innerHTML = `<strong>Đáp án bạn chọn:</strong> ${userPickTxt}`;
-    const correct = document.createElement('div'); correct.innerHTML = `<strong>Đáp án đúng:</strong> ${correctTxt}`;
-
-    const explain = document.createElement('div'); explain.className = 'explain'; explain.innerHTML = `<em>Giải thích:</em> ${q.explainVI}<br/><em>Why (EN):</em> ${q.explainEN}`;
-
-    const foot = document.createElement('div'); foot.className = 'difficulty'; foot.textContent = `Difficulty: ${q.difficulty} • Weight: ${q.weight}`;
-
-    card.appendChild(title); card.appendChild(status); card.appendChild(picked); card.appendChild(correct); card.appendChild(explain); card.appendChild(foot);
+  reviewPanel.innerHTML=''; const s=scoreQuiz();
+  quiz.forEach((q,qi)=>{
+    const row=s.detail[q.id]; if(!filterFn(row)) return;
+    const card=document.createElement('div'); card.className='rev-card';
+    const title=document.createElement('h4'); title.className='rev-title'; title.textContent=`Q${qi+1} — Phần ${q.section}`;
+    const status=document.createElement('div'); status.innerHTML=row.isCorrect?'<span class="pill correct">Correct</span>':'<span class="pill wrong">Incorrect</span>';
+    const userPickIdx=row.picked; const userPickTxt=(userPickIdx!==null&&userPickIdx!==undefined)?`${String.fromCharCode(65+userPickIdx)}. ${q.choices[userPickIdx].text}`:'— (chưa chọn)';
+    const correctIdx=row.correctIndex; const correctTxt=`${String.fromCharCode(65+correctIdx)}. ${q.choices[correctIdx].text}`;
+    const picked=document.createElement('div'); picked.innerHTML=`<strong>Đáp án bạn chọn:</strong> ${userPickTxt}`;
+    const correct=document.createElement('div'); correct.innerHTML=`<strong>Đáp án đúng:</strong> ${correctTxt}`;
+    const explain=document.createElement('div'); explain.className='rev-title'; explain.innerHTML=`<em>Giải thích:</em> ${q.explainVI}<br/><em>Why (EN):</em> ${q.explainEN}`;
+    card.appendChild(title); card.appendChild(status); card.appendChild(picked); card.appendChild(correct); card.appendChild(explain);
     reviewPanel.appendChild(card);
   });
   reviewPanel.classList.remove('hidden');
 }
 
-function nextStep(){
-  current++;
-  if(current < quiz.length){ renderQuestion(); }
-  else { qContainer.innerHTML = '<em>Đã trả lời tất cả câu hỏi.</em>'; finish(); }
-}
+function nextStep(){ current++; if(current<quiz.length){ renderQuestion(); } else { qContainer.innerHTML='<em>Đã trả lời tất cả câu hỏi.</em>'; finish(); } }
 
 function start(){
-  // clone and shuffle order of questions
   quiz = shuffle(baseQuiz.slice());
-  // shuffle options per question while preserving truth
-  quiz.forEach(q=>{
-    const arr = q.options.map((text, idx)=>({ text, isCorrect: idx===q.correctIndex }));
-    q.choices = SHUFFLE_OPTIONS ? shuffle(arr) : arr;
-  });
-  Object.keys(answers).forEach(k=>delete answers[k]);
-  current = 0; lifelineUsed = false; lifelineBtn.disabled = false;
-  totalPointsEl.textContent = totalPossiblePoints();
-  bar.style.width = '0%';
-  closeMVT();
-  renderQuestion();
+  quiz.forEach(q=>{ const arr=q.options.map((t,i)=>({text:t,isCorrect:i===q.correctIndex})); q.choices = (true?shuffle(arr):arr); });
+  Object.keys(answers).forEach(k=>delete answers[k]); current=0; lifelineUsed=false; lifelineBtn.disabled=false;
+  totalPointsEl.textContent = quiz.reduce((s,q)=>s+q.weight,0);
+  bar.style.width='0%'; closeMVT(); renderQuestion();
 }
 
-// Lifeline modal logic (one-time, user-initiated only)
+// Lifeline modal
 function openMVT(){ overlay.classList.remove('hidden'); overlay.removeAttribute('aria-hidden'); setTimeout(()=>okMvt.focus(),0); }
 function closeMVT(){ overlay.classList.add('hidden'); overlay.setAttribute('aria-hidden','true'); }
 
-// Bindings
-const reviewIncorrectBtn = document.getElementById('reviewIncorrectBtn');
-const reviewAllBtn = document.getElementById('reviewAllBtn');
-reviewIncorrectBtn.addEventListener('click', ()=> buildReviewCards(row=>!row.isCorrect));
-reviewAllBtn.addEventListener('click', ()=> buildReviewCards(()=>true));
+// Bindings (NO duplicate consts here)
+reviewIncorrectBtn.addEventListener('click',()=>buildReviewCards(row=>!row.isCorrect));
+reviewAllBtn.addEventListener('click',()=>buildReviewCards(()=>true));
+resetBtn.addEventListener('click',()=>{ reviewPanel.classList.add('hidden'); reviewBtns.classList.add('hidden'); resultEl.classList.add('hidden'); start(); });
+lifelineBtn.addEventListener('click',(e)=>{ e.preventDefault(); if(lifelineUsed) return; openMVT(); });
+okMvt.addEventListener('click',()=>{ closeMVT(); lifelineUsed=true; lifelineBtn.disabled=true; });
+window.addEventListener('keydown',ev=>{ if(ev.key==='Escape'&&!overlay.classList.contains('hidden')) closeMVT(); });
 
-const resetBtn = document.getElementById('resetBtn');
-resetBtn.addEventListener('click', ()=>{ reviewPanel.classList.add('hidden'); reviewBtns.classList.add('hidden'); resultEl.classList.add('hidden'); start(); });
-
-const lifelineBtn = document.getElementById('lifelineBtn');
-lifelineBtn.addEventListener('click', (e)=>{ e.preventDefault(); if(lifelineUsed) return; openMVT(); });
-const okMvt = document.getElementById('okMvt');
-okMvt.addEventListener('click', ()=>{ closeMVT(); lifelineUsed = true; lifelineBtn.disabled = true; });
-window.addEventListener('keydown', (ev)=>{ if(ev.key==='Escape' && !overlay.classList.contains('hidden')) closeMVT(); });
-
-// ===============================
-// Self-tests (console) – to ensure scoring/weights are correct
-// ===============================
-(function runSelfTests(){
-  const tests = [];
-  // 1) Weight sum = 17 (A:5×1 + B:3×2 + C:2×3)
-  tests.push((()=> baseQuiz.reduce((s,q)=>s+q.weight,0)===17)());
-  // 2) Correct indices map to right text
-  tests.push((()=> baseQuiz.every(q=> q.options[q.correctIndex] !== undefined))());
-  // 3) Scoring with all-correct gives full points
-  (function(){
-    const clone = baseQuiz.map(q=>({ ...q }));
-    clone.forEach(q=>{ q.choices = q.options.map((t,i)=>({text:t,isCorrect:i===q.correctIndex})); });
-    const tmpQuiz = clone;
-    const tmpAns = {}; tmpQuiz.forEach(q=>{ tmpAns[q.id] = q.choices.findIndex(c=>c.isCorrect); });
-    const earned = tmpQuiz.reduce((s,q)=> s + (q.choices[tmpAns[q.id]].isCorrect ? q.weight:0), 0);
-    tests.push(earned === 17);
-  })();
-  console.log('[Workspace MCQ] Self-tests pass=', tests.every(Boolean), tests);
+// ===== Self-tests =====
+(function tests(){
+  const tests=[];
+  tests.push(baseQuiz.reduce((s,q)=>s+q.weight,0)===17); // total weight
+  tests.push(baseQuiz.every(q=> q.options[q.correctIndex]!==undefined)); // correct exists
+  // DOM smoke test: after start, there should be choices
+  const old = console.error; let hadErr=false; console.error = (...a)=>{hadErr=true; old.apply(console,a)};
+  start();
+  const ok = qContainer.querySelectorAll('label.opt').length===4; tests.push(ok);
+  console.log('[Workspace MCQ FIX] tests pass =', tests.every(Boolean), tests);
 })();
-
-// Init
-start();
 </script>
 </body>
 </html>
-
