@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Cờ Việt Nam</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="flagCanvas"></canvas>
+    <button id="settingsToggle" class="settings-toggle" aria-label="Cài đặt">
+      <span class="settings-icon">&#9881;</span>
+      <span class="settings-title">Cài đặt</span>
+      <!-- <span id="settingsArrow" class="settings-arrow">&#9660;</span> -->
+    </button>
+    <div class="controls settings-panel" id="settingsPanel">
+      <div class="controls-item">
+        <label for="speedRange">Tốc độ uốn lượn:</label>
+        <input type="range" id="speedRange" min="1" max="30" value="7" />
+      </div>
+      <div class="controls-item">
+        <label for="musicSelect">Chọn nhạc:</label>
+        <select id="musicSelect">
+          <option value="assets/viettiepcauchuyenhoabinh.mp3">
+            Viết Tiếp Câu Chuyện Hòa Bình
+          </option>
+          <option value="assets/vietnamtrongtoila.mp3">
+            VIỆT NAM TRONG TÔI LÀ
+          </option>
+          <option value="assets/vietnamoi.mp3">Việt Nam Ơi</option>
+        </select>
+      </div>
+      <div class="controls-item">
+        <div class="music-controls">
+          <button id="prevMusicBtn" title="Bài trước">&#9664;</button>
+          <button id="playMusicBtn">Phát nhạc</button>
+          <button id="nextMusicBtn" title="Bài tiếp">&#9654;</button>
+        </div>
+      </div>
+      <div class="controls-item">
+        <audio
+          id="flagAudio"
+          src="./assets/viettiepcauchuyenhoabinh.mp3"
+        ></audio>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

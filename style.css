@@ -1,0 +1,380 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background: #222;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#flagCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-width: 100vw;
+  min-height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: block;
+  border: none;
+  background: #222;
+  z-index: 1;
+  /* Cải thiện rendering trên mobile */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+body {
+  /* Xóa width/height cũ, chỉ giữ ở html */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+}
+
+.controls {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 10;
+}
+
+.controls-right {
+  top: 18px;
+  right: 18px;
+  padding: 10px 12px 8px 12px;
+  min-width: 120px;
+}
+
+.controls-left {
+  top: 18px;
+  left: 18px;
+  padding: 14px 16px 12px 16px;
+  min-width: 160px;
+}
+
+.settings-panel {
+  position: absolute;
+  top: 66px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  padding: 12px 14px 10px 14px;
+  min-width: 160px;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 20;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.settings-panel.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.settings-toggle {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+  min-width: 120px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 30;
+  padding: 0 14px;
+  transition: background 0.2s;
+  /* Tắt highlight trên mobile */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.settings-toggle:hover {
+  background: #f5f5f5;
+}
+
+.settings-icon {
+  font-size: 1.25rem;
+  color: #c62828;
+}
+
+.settings-title {
+  font-size: 1rem;
+  color: #c62828;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.settings-arrow {
+  font-size: 1.1rem;
+  color: #c62828;
+  margin-left: auto;
+  transition: transform 0.2s;
+}
+
+.settings-toggle.open .settings-arrow {
+  transform: rotate(180deg);
+}
+
+.settingsToggle h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.02rem;
+  color: #c62828;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: left;
+}
+
+.controls-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.controls-item:last-child {
+  margin-bottom: 0;
+}
+
+label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #c62828;
+  margin-bottom: 5px;
+  letter-spacing: 0.5px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #c62828;
+  margin-bottom: 0;
+  height: 20px;
+}
+
+select {
+  width: 100%;
+  margin-bottom: 0;
+  padding: 5px 7px;
+  font-size: 0.92rem;
+  border-radius: 6px;
+  border: 1px solid #c62828;
+  background: #fff;
+  color: #c62828;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+button#playMusicBtn {
+  padding: 7px 12px;
+  font-size: 0.92rem;
+  background: #c62828;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button#playMusicBtn:hover {
+  background: #b71c1c;
+}
+
+.music-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+#prevMusicBtn,
+#nextMusicBtn {
+  padding: 7px 10px;
+  font-size: 1rem;
+  background: #e0e0e0;
+  color: #c62828;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#prevMusicBtn:hover,
+#nextMusicBtn:hover {
+  background: #ffcdd2;
+}
+
+audio {
+  width: 100%;
+  margin-top: 2px;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+  #flagCanvas {
+    width: 100vw !important;
+    height: 100vh !important;
+    min-width: 100vw;
+    min-height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+  .settings-panel {
+    left: 0;
+    right: 0;
+    width: 100vw;
+    min-width: 0;
+    max-width: 100vw;
+    padding: 12px 4vw 8px 4vw;
+  }
+  .settings-toggle {
+    padding: 0 4vw;
+  }
+
+  .settings-title {
+    font-size: 1.1rem;
+  }
+
+  .settings-icon {
+    font-size: 1.4rem;
+  }
+
+  .controls-item {
+    margin-bottom: 12px;
+  }
+
+  label,
+  select,
+  button#playMusicBtn {
+    font-size: 1.1rem;
+  }
+
+  input[type="range"] {
+    height: 36px;
+  }
+
+  input[type="range"]::-webkit-slider-track {
+    background: #ddd;
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #c62828;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -8px;
+  }
+
+  input[type="range"]::-moz-range-track {
+    background: #ddd;
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    background: #c62828;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+  }
+
+  button#playMusicBtn {
+    padding: 12px 16px;
+    font-size: 1.1rem;
+    min-height: 44px;
+  }
+
+  #prevMusicBtn,
+  #nextMusicBtn {
+    padding: 10px 12px;
+    font-size: 1.2rem;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  audio {
+    margin-top: 8px;
+    height: 44px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 900px) and (orientation: landscape) {
+  .settings-toggle {
+    height: 36px;
+  }
+
+  .settings-panel {
+    top: 44px;
+    right: 4px;
+    left: 4px;
+    padding: 8px;
+  }
+
+  .controls-item {
+    margin-bottom: 6px;
+  }
+
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+  }
+
+  input[type="range"] {
+    height: 24px;
+  }
+
+  button#playMusicBtn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    min-height: 32px;
+  }
+
+  #prevMusicBtn,
+  #nextMusicBtn {
+    padding: 6px 8px;
+    font-size: 1rem;
+    min-height: 32px;
+    min-width: 32px;
+  }
+}
