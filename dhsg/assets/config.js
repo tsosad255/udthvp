@@ -43,8 +43,8 @@ window.PRODUCTS = [
   },
   {
     id: 'AI-0031',
-    title: 'Google AI Ultra 45 ngày (Chính chủ)',
-    desc: '30TB drive, sử dụng hiệu quả hơn bộ công cụ google cho việc học tập và làm việc của bạn.',
+    title: 'Google AI Ultra 45 ngày',
+    desc: '30TB drive, 25k credit truy cập VEO3 và sử dụng hiệu quả hơn bộ công cụ google cho việc học tập và làm việc của bạn.',
     priceVND: 9999999,
     productImage: './spam/ggultr.webp',   
     qrImage: './spam/QR.jpg',             
