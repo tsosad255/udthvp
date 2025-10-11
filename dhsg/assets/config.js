@@ -54,9 +54,20 @@ window.PRODUCTS = [
   },
   {
     id: 'AI-004',
-    title: 'Chatgpt plus 3 tháng (chính chủ)',
+    title: 'Chatgpt plus 3 tháng (code)',
     desc: 'trợ lý thông minh hỗ trợ đắc lực cho học tập và làm việc',
-    priceVND: 50000,
+    priceVND: 30000,
+    productImage: './spam/gpt3m.png',
+    qrImage: './spam/QR.jpg',
+    ckNote: 'Đây là gói chính chủ, sau khi chuyển khoản lưu ý phải liên hệ mail hoặc FB để nhận code và video hướng dẫn kích hoạt.',
+    googleForm: 'https://forms.gle/5HmaCKbY9bhKpuor8',
+    detailUrl: 'https://chatgpt.com/vi-VN/#pricing'
+  },
+    {
+    id: 'AI-0041',
+    title: 'Chatgpt plus 3 tháng (Tài khoản)',
+    desc: 'trợ lý thông minh hỗ trợ đắc lực cho học tập và làm việc',
+    priceVND: 40000,
     productImage: './spam/gpt3m.png',
     qrImage: './spam/QR.jpg',
     ckNote: 'Đây là gói chính chủ, sau khi chuyển khoản lưu ý phải liên hệ mail hoặc FB để nhận code và video hướng dẫn kích hoạt.',
