@@ -77,7 +77,7 @@ window.PRODUCTS = [
   {
     id: 'AI-006',
     title: 'Youtube premium (share)',
-    desc: 'Xem video không gián đoạn và nâng cao trãi nghiệm lên tầm cao mới với Youtube prenium',
+    desc: 'Gói 1 tháng xem video không gián đoạn và nâng cao trãi nghiệm lên tầm cao mới với Youtube prenium',
     priceVND: 15000,
     productImage: './spam/ytbpre.png',
     qrImage: './spam/QR.jpg',
