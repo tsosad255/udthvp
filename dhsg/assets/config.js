@@ -32,9 +32,9 @@ window.PRODUCTS = [
   },
   {
     id: 'AI-003',
-    title: 'Google AI Ultra 45 ngày (share)',
-    desc: '30TB drive, sử dụng hiệu quả hơn bộ công cụ google cho việc học tập và làm việc của bạn.',
-    priceVND: 50000,
+    title: 'Google AI Ultra 45 ngày',
+    desc: 'Gói chỉ share cho một người,sở hữu trọn vẹn 30TB drive, 25k credit truy cập VEO3 và sử dụng hiệu quả hơn bộ công cụ google cho việc học tập và làm việc của bạn.',
+    priceVND: 99999,
     productImage: './spam/ggultr.webp',   
     qrImage: './spam/QR.jpg',             
     ckNote: 'Đây là gói share qua family, không dùng chung drive và gemini, hãy chuẩn bị gmail chưa tham gia family và điền vào form',
