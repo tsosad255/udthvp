@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Letter‑Builder Quiz – Unit 1 & 2 (Timed)</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#111827; --text:#e5e7eb; --muted:#94a3b8;
+    --accent:#22d3ee; --accent2:#60a5fa; --ok:#10b981; --bad:#ef4444; --warn:#f59e0b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:linear-gradient(180deg,#0b1220,#0f172a 35%,#0b1220);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
+  .container{max-width:980px;margin:24px auto;padding:20px}
+  .card{background:rgba(17,24,39,.75);backdrop-filter:blur(6px);border:1px solid rgba(148,163,184,.15);border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  h1{margin:0 0 6px;font-size:clamp(22px,3.6vw,34px)}
+  p.lead{margin:.25rem 0 1rem;color:var(--muted)}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .badge{border:1px solid rgba(148,163,184,.25);padding:4px 10px;border-radius:999px;color:var(--muted);font-size:.85rem}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{appearance:none;border:1px solid transparent;background:var(--accent2);color:#081028;font-weight:700;padding:10px 14px;border-radius:12px;cursor:pointer;transition:.2s ease}
+  button.secondary{background:transparent;border-color:rgba(148,163,184,.35);color:var(--text)}
+  button:disabled{opacity:.55;cursor:not-allowed}
+
+  .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin:6px 0 12px}
+  .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .25s ease}
+
+  .qwrap{border:1px solid rgba(148,163,184,.18);border-radius:14px;padding:16px;min-height:220px}
+  .qwrap h3{margin:0 0 8px;font-size:1.02rem}
+  .difficulty{font-size:.8rem;color:var(--muted)}
+
+  .sentence{margin:10px 0 12px;line-height:1.9}
+  .slot{display:inline-flex;align-items:center;justify-content:center;width:28px;height:34px;margin:0 4px;border-bottom:2px dashed rgba(148,163,184,.35);border-radius:6px;background:rgba(148,163,184,.08);font-weight:700;letter-spacing:.5px}
+  .slot.filled{border-bottom-color:rgba(96,165,250,.8)}
+
+  .bank{display:flex;flex-wrap:wrap;gap:8px}
+  .tile{border:1px solid rgba(148,163,184,.3);background:transparent;color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer;transition:.2s;font-weight:700;min-width:36px;text-align:center}
+  .tile:hover{border-color:var(--accent)}
+  .tile.used{opacity:.4;pointer-events:none}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+  .result{margin-top:16px;padding:14px;border-radius:12px;background:rgba(96,165,250,.08);border:1px dashed rgba(96,165,250,.35)}
+  .hidden{display:none!important}
+
+  .review{margin-top:18px;display:grid;gap:14px}
+  .rev-card{border:1px solid rgba(148,163,184,.2);border-radius:14px;padding:14px;background:rgba(17,24,39,.55)}
+  .rev-title{margin:0 0 6px;font-size:1rem}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;border:1px solid rgba(148,163,184,.3);color:var(--muted)}
+  .pill.correct{border-color:rgba(16,185,129,.5);color:#c8ffe3}
+  .pill.wrong{border-color:rgba(239,68,68,.6);color:#ffd2d2}
+  .explain{color:var(--muted);font-size:.95rem;margin-top:6px}
+
+  /* Lifeline modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:1000}
+  .overlay.hidden{display:none!important}
+  .modal{background:var(--panel);border:1px solid rgba(148,163,184,.25);border-radius:16px;padding:18px;max-width:420px;width:92%}
+  .modal h4{margin:0 0 8px}
+  .modal p{margin:8px 0 14px}
+  .badge.warn{ border-color: rgba(245,158,11,.5); color: var(--warn); }
+
+  /* Pre-start form */
+  .prestart{border:1px dashed rgba(148,163,184,.3); border-radius:14px; padding:14px; background:rgba(17,24,39,.55); margin-top:12px}
+  .pre-grid{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+  .prestart label{font-size:.9rem; color:var(--muted)}
+  .prestart input{width:100%; padding:10px 12px; border-radius:10px; background:#0b1220; border:1px solid rgba(148,163,184,.25); color:var(--text)}
+  .error{color:#ffd2d2; font-size:.9rem; margin-top:6px}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Letter‑Builder Quiz – Unit 1 & 2</h1>
+      <div class="meta">
+        <span class="badge" id="timerBadge" aria-live="polite" title="Thời gian còn lại">⏳ 05:00</span>
+        <span class="badge">Weights → Easy: 1 • Medium: 2 • Hard: 3</span>
+        <span class="badge">Total Possible Points: <span id="totalPoints">—</span></span>
+        <div class="row" style="margin-left:auto">
+          <button id="lifelineBtn" type="button" title="Hỏi MVT" aria-haspopup="dialog" aria-controls="overlay">🆘 Nhờ Chuyên Gia</button>
+          <!-- Reset button intentionally removed -->
+        </div>
+      </div>
+
+      <!-- Pre-start: collect Full Name + Student ID -->
+      <div id="preStart" class="prestart">
+        <div class="pre-grid">
+          <div>
+            <label for="fullName">Họ và tên</label>
+            <input id="fullName" type="text" placeholder="VD: Nguyễn Trần Hữu Thành" autocomplete="name"/>
+          </div>
+          <div>
+            <label for="studentId">MSSV</label>
+            <input id="studentId" type="text" placeholder="VD: 3124390000" autocomplete="off"/>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px; gap:12px">
+          <button id="startBtn" type="button">Bắt đầu làm bài</button>
+          <span id="preErr" class="error" style="display:none">Vui lòng nhập đủ Họ tên và MSSV.</span>
+          <span id="cfgHint" class="error" style="display:none">Bạn chưa dán đúng URL Web App (xem hướng dẫn phía dưới).</span>
+        </div>
+      </div>
+
+      <div class="progress" aria-label="progress"><div id="bar" class="bar"></div></div>
+
+      <section id="qContainer" class="qwrap" aria-live="polite">
+        <em>Khai báo danh tính đi rồi bấm “Bắt đầu làm bài”.</em>
+      </section>
+
+      <div id="result" class="result hidden" role="status" aria-live="polite"></div>
+      <div class="row hidden" id="reviewButtons" style="margin-top:10px">
+        <button id="reviewIncorrectBtn" type="button" class="secondary">Xem lại câu sai</button>
+        <button id="reviewAllBtn" type="button" class="secondary">Xem lại tất cả</button>
+      </div>
+      <section id="reviewPanel" class="review hidden" aria-label="Review"></section>
+    </div>
+  </div>
+
+  <!-- Lifeline Modal (Hỏi MVT) -->
+  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mvtTitle" aria-hidden="true">
+    <div class="modal" role="document">
+      <h4 id="mvtTitle">Tìm được chuyên gia: MVT</h4>
+      <p><strong>Thông tin liên hệ: 500k TSOSAD255 MBBANK</strong></p>
+      <div class="row" style="justify-content:flex-end">
+        <button id="okMvt" type="button" autofocus>OK</button>
+      </div>
+    </div>
+  </div>
+  <!-- Secret Modal -->
+<div id="secretOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="secretTitle" aria-hidden="true">
+  <div class="modal" role="document">
+    <h4 id="secretTitle">Bạn T giấu tên:</h4>
+    <p><strong>Người đẹp cho mình xin 15p giải lao nhee</strong></p>
+    <div class="row" style="justify-content:flex-end">
+      <button id="secretOkBtn" type="button" autofocus>ờ</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+'use strict';
+// ===============================
+// CONFIG: Hardcode Apps Script Web App URL here
+// ===============================
+const CONFIG = {
+  // !!! THAY THẾ CHUỖI DƯỚI ĐÂY BẰNG URL WEB APP (đuôi /exec) CỦA BẠN !!!
+  gasUrl: 'https://script.google.com/macros/s/AKfycbz6xvGtp27qbjZXy64fWDO33l4kmqXVWBNVCR3rBtg8B_y6rjHCQQIfW6XVTrdL2g/exec'
+};
+function isGasUrlReady(){
+  return typeof CONFIG.gasUrl === 'string'
+      && CONFIG.gasUrl.includes('/exec')
+      && !CONFIG.gasUrl.includes('REPLACE_WITH_YOUR_EXEC_ID');
+}
+
+// ===============================
+// Data
+// ===============================
+const baseItems = [
+  { id:'b1', diff:'medium', weight:2,
+    stemA:'An ', stemB:' institution is an organization, such as a library or archive, that collects, stores, organizes, processes, and provides access to information.',
+    answer:'information', explain:''
+  },
+  { id:'b2', diff:'easy', weight:1,
+    stemA:'The ', stemB:' library holds print resources, while the virtual library holds digital ones.',
+    answer:'physical', explain:''
+  },
+  { id:'b3', diff:'medium', weight:2,
+    stemA:'Data collected through ', stemB:' and surveys is essential for planning and policy-making.',
+    answer:'observations', explain:''
+  },
+  { id:'b4', diff:'medium', weight:2,
+    stemA:'A ', stemB:' house serves as an agency for the collection, classification, and distribution of data or information.',
+    answer:'clearing', explain:''
+  },
+  { id:'b5', diff:'easy', weight:1,
+    stemA:'In modern librarianship, knowledge is moving from print to ', stemB:' formats.',
+    answer:'digital', explain:''
+  },
+  { id:'b6', diff:'hard', weight:3,
+    stemA:'The rise of information ', stemB:' has completely transformed the role of libraries and information centers.',
+    answer:'technologies', explain:''
+  },
+  { id:'b7', diff:'medium', weight:2,
+    stemA:'Non-institutionalized information services include knowledge mediators, information filters, human networks, and ', stemB:' brokers.',
+    answer:'information', explain:''
+  },
+  { id:'b8', diff:'medium', weight:2,
+    stemA:'Modern librarians must take on roles such as knowledge facilitators, research analysts, and information ', stemB:'.',
+    answer:'managers', explain:''
+  }
+];
+
+// ===============================
+// Helpers
+// ===============================
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function lettersForAnswer(ans){
+  const alpha='abcdefghijklmnopqrstuvwxyz';
+  const core=ans.toLowerCase().replace(/[^a-z]/g,'').split('');
+  const extras=[]; let pool=alpha.split('').filter(c=>!core.includes(c));
+  for(let i=0;i<3;i++){
+    if(pool.length===0){ pool=alpha.split(''); }
+    const idx=Math.floor(Math.random()*(pool.length));
+    extras.push(pool.splice(idx,1)[0]);
+  }
+  return shuffle(core.concat(extras));
+}
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+
+// ===============================
+// State
+// ===============================
+let items=[]; let current=0; const answers={}; let lifelineUsed=false;
+let fullName=''; let studentId='';
+
+const totalPointsEl=document.getElementById('totalPoints');
+const qContainer=document.getElementById('qContainer');
+const bar=document.getElementById('bar');
+const resultEl=document.getElementById('result');
+const reviewBtns=document.getElementById('reviewButtons');
+const reviewIncorrectBtn=document.getElementById('reviewIncorrectBtn');
+const reviewAllBtn=document.getElementById('reviewAllBtn');
+const reviewPanel=document.getElementById('reviewPanel');
+const lifelineBtn=document.getElementById('lifelineBtn');
+const overlay=document.getElementById('overlay');
+const okMvt=document.getElementById('okMvt');
+const secretOverlay = document.getElementById('secretOverlay');
+const secretOkBtn   = document.getElementById('secretOkBtn');
+const timerBadge=document.getElementById('timerBadge');
+
+const preStart=document.getElementById('preStart');
+const startBtn=document.getElementById('startBtn');
+const fullNameInput=document.getElementById('fullName');
+const studentIdInput=document.getElementById('studentId');
+const preErr=document.getElementById('preErr');
+const cfgHint=document.getElementById('cfgHint');
+
+// ===============================
+// Timer (5 minutes) & Auto-submit
+// ===============================
+const LIMIT_MS = 5 * 60 * 1000;
+let deadline=0, timerId=null, finished=false, timeUp=false, startedAt=0;
+
+function fmtTime(ms){ if(ms<0) ms=0; const t=Math.floor(ms/1000); const m=Math.floor(t/60); const s=t%60; return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); }
+function updateTimer(){
+  const left = deadline - Date.now();
+  if(left <= 30_000) timerBadge.classList.add('warn'); else timerBadge.classList.remove('warn');
+  timerBadge.textContent = '⏳ ' + fmtTime(left);
+  if(left <= 0){ stopTimer(); timeUp = true; autoSubmit(); }
+}
+function startTimer(){ stopTimer(); startedAt=Date.now(); deadline=startedAt+LIMIT_MS; timerId=setInterval(updateTimer, 250); updateTimer(); }
+function stopTimer(){ if(timerId){ clearInterval(timerId); timerId=null; } }
+function disableQuizInputs(){ qContainer.querySelectorAll('button.tile, .actions button').forEach(el=>el.disabled=true); lifelineBtn.disabled=true; }
+function autoSubmit(){ if(finished) return; disableQuizInputs(); qContainer.innerHTML = '<em>⏱️ Hết giờ — hệ thống đã tự động nộp bài.</em>'; finish(); }
+
+// ===============================
+// Google Sheets (Apps Script Web App)
+// ===============================
+async function sendToSheets(payload){
+  if(!isGasUrlReady()) throw new Error('URL Apps Script chưa được dán cứng trong file.');
+  let res=null;
+  try{
+    res = await fetch(CONFIG.gasUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload), mode:'cors', redirect:'follow' });
+  }catch(e){ /* network/preflight error → fall through */ }
+  if(res && res.ok){
+    const t = await res.text().catch(()=>'');
+    return t || 'OK';
+  }else{
+    await fetch(CONFIG.gasUrl, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload), mode:'no-cors' });
+    return 'SENT_OPAQUE';
+  }
+}
+
+// ===============================
+// Core quiz rendering
+// ===============================
+function totalPossible(){return items.reduce((s,it)=>s+it.weight,0)}
+function progress(){bar.style.width=Math.round((current/items.length)*100)+'%'}
+
+function renderQuestion(){
+  progress(); reviewPanel.classList.add('hidden'); reviewBtns.classList.add('hidden'); resultEl.classList.add('hidden');
+  const it=items[current]; const n=current+1; qContainer.innerHTML='';
+
+  const h=document.createElement('h3'); h.innerHTML=`<span style="opacity:.9">Q${n}/${items.length}.</span> Build the answer by picking letters.`;
+  const d=document.createElement('div'); d.className='difficulty'; d.textContent=`Difficulty: ${it.diff} • Weight: ${it.weight}`;
+
+  const p=document.createElement('div'); p.className='sentence';
+  const slots=[]; const answer=it.answer.replace(/\s+/g,'');
+  const before=document.createTextNode(it.stemA); const after=document.createTextNode(it.stemB);
+  p.append(before);
+  for(let i=0;i<answer.length;i++){
+    const s=document.createElement('span');
+    s.className='slot'; s.dataset.pos=i; s.textContent='';
+    slots.push(s); p.appendChild(s);
+  }
+  p.append(after);
+
+  const bank=document.createElement('div'); bank.className='bank';
+  const letters=lettersForAnswer(it.answer);
+  letters.forEach((ch)=>{
+    const btn=document.createElement('button');
+    btn.type='button'; btn.className='tile';
+    btn.textContent=ch.toUpperCase(); btn.dataset.char=ch;
+    btn.addEventListener('click',()=>{
+      const slot=slots.find(s=>!s.textContent);
+      if(!slot) return;
+      slot.textContent=ch.toUpperCase(); slot.classList.add('filled');
+      btn.classList.add('used'); btn.disabled=true;
+      updateControls();
+    });
+    bank.appendChild(btn);
+  });
+
+  const actions=document.createElement('div'); actions.className='actions';
+  const back=document.createElement('button'); back.type='button'; back.className='secondary'; back.textContent='Backspace';
+  back.addEventListener('click',()=>{
+    for(let i=slots.length-1;i>=0;i--){
+      if(slots[i].textContent){
+        const ch=slots[i].textContent.toLowerCase();
+        slots[i].textContent=''; slots[i].classList.remove('filled');
+        const used=[...bank.querySelectorAll('.tile.used')];
+        const t=used.find(x=>x.dataset.char===ch);
+        if(t){ t.classList.remove('used'); t.disabled=false; }
+        break;
+      }
+    }
+    updateControls();
+  });
+
+  const clear=document.createElement('button'); clear.type='button'; clear.className='secondary'; clear.textContent='Clear';
+  clear.addEventListener('click',()=>{
+    slots.forEach(s=>{
+      if(s.textContent){
+        const ch=s.textContent.toLowerCase();
+        const t=[...bank.querySelectorAll('.tile.used')].find(x=>x.dataset.char===ch);
+        if(t){ t.classList.remove('used'); t.disabled=false; }
+        s.textContent=''; s.classList.remove('filled');
+      }
+    });
+    updateControls();
+  });
+
+  const check=document.createElement('button'); check.type='button'; check.textContent='Check & Next'; check.disabled=true;
+  check.addEventListener('click',()=>{
+    const built=slots.map(s=>s.textContent.toLowerCase()).join('');
+    answers[it.id]=built;
+    if(current<items.length-1){
+      current++; renderQuestion();
+    }else{ finish(); qContainer.innerHTML='<em>All questions answered.</em>'; }
+  });
+
+  function updateControls(){
+    const full=slots.every(s=>!!s.textContent);
+    check.disabled=!full;
+  }
+
+  qContainer.appendChild(h); qContainer.appendChild(d); qContainer.appendChild(p); qContainer.appendChild(bank);
+  actions.appendChild(back); actions.appendChild(clear); actions.appendChild(check); qContainer.appendChild(actions);
+  updateControls();
+}
+
+function scoreAll(){
+  let earned=0, correctCount=0; const detail={};
+  items.forEach(it=>{
+    const built=(answers[it.id]||'').toLowerCase();
+    const truth=it.answer.toLowerCase().replace(/\s+/g,'');
+    const ok=built===truth; if(ok){earned+=it.weight; correctCount++;}
+    detail[it.id]={ok, picked:built, correct:it.answer, explain:it.explain, weight:it.weight, diff:it.diff};
+  });
+  const total=totalPossible(); const percent=Math.round(100*earned/total);
+  return {earned,total,percent,correctCount,detail};
+}
+
+function buildAttemptPayload(summary){
+  const endedAt = Date.now();
+  const durationMs = Math.max(0, endedAt - startedAt);
+  return {
+    attemptId: String(endedAt)+'-'+Math.random().toString(36).slice(2,8),
+    timeStartISO: new Date(startedAt).toISOString(),
+    timeEndISO: new Date(endedAt).toISOString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    durationMs, timeUp,
+    score: summary.earned, totalPoints: summary.total, percent: summary.percent,
+    correctCount: summary.correctCount, totalQuestions: items.length,
+    answers: Object.keys(summary.detail).map(id=>{
+      const r=summary.detail[id]; return {id, picked:r.picked, correct:r.correct, weight:r.weight, isCorrect:r.ok};
+    }),
+    fullName, studentId, userAgent: navigator.userAgent
+  };
+}
+
+function finish(){
+  stopTimer(); finished=true;
+  const s=scoreAll();
+  bar.style.width='100%';
+  resultEl.classList.remove('hidden');
+  resultEl.innerHTML = `
+    ${timeUp ? '<div class="badge warn">⏱️ Time up — auto-submitted</div>' : ''}
+    <div><strong>Kết quả:</strong> ${s.earned} điểm</div>
+    <div style="color:var(--muted)">Chi tiết: ${s.earned} / ${s.total} điểm (${s.percent}%). Đúng: ${s.correctCount}/${items.length}.</div>
+    <div style="color:var(--muted)">Người làm: <strong>${escapeHtml(fullName)}</strong> • MSSV: <strong>${escapeHtml(studentId)}</strong></div>
+    <div id="sendStatus" style="margin-top:8px;color:var(--muted)"><em>Đang gửi kết quả…</em></div>
+  `;
+  reviewBtns.classList.remove('hidden');
+
+  (async()=>{
+    try{
+      const payload=buildAttemptPayload(s);
+      await sendToSheets(payload);
+      const el=document.getElementById('sendStatus'); if(el) el.innerHTML='✅ Đã gửi kết quả thành công.';
+    }catch(err){
+      const el=document.getElementById('sendStatus'); if(el) el.innerHTML='⚠️ Không gửi được kết quả. Kiểm tra URL Web App và quyền truy cập.';
+      console.error('Send error:', err);
+    }
+  })();
+}
+
+function buildReviewCards(onlyWrong){
+  reviewPanel.innerHTML=''; const s=scoreAll(); let i=0;
+  items.forEach(it=>{
+    const row=s.detail[it.id]; i++; if(onlyWrong&&row.ok) return;
+    const card=document.createElement('div'); card.className='rev-card';
+    const title=document.createElement('h4'); title.className='rev-title'; title.textContent=`Q${i}`;
+
+    const status=document.createElement('div'); status.innerHTML=row.ok?'<span class="pill correct">Correct</span>':'<span class="pill wrong">Incorrect</span>';
+    const sent=document.createElement('div'); const picked=row.picked?row.picked:'—';
+    sent.innerHTML=`${it.stemA}<strong>${picked}</strong>${it.stemB}`;
+    const correct=document.createElement('div'); correct.innerHTML=`<strong>Correct:</strong> ${it.answer}`;
+    const ex=document.createElement('div'); ex.className='explain'; ex.textContent=it.explain;
+
+    const foot=document.createElement('div'); foot.className='difficulty'; foot.textContent=`Difficulty: ${it.diff} • Weight: ${it.weight}`;
+
+    card.appendChild(title); card.appendChild(status); card.appendChild(sent); card.appendChild(correct); card.appendChild(ex); card.appendChild(foot);
+    reviewPanel.appendChild(card);
+  });
+  reviewPanel.classList.remove('hidden');
+}
+
+function openMVT(){overlay.classList.remove('hidden'); overlay.removeAttribute('aria-hidden'); setTimeout(()=>okMvt.focus(),0)}
+function closeMVT(){overlay.classList.add('hidden'); overlay.setAttribute('aria-hidden','true')}
+function normalizeName(s){
+  return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/\s+/g,' ').trim();
+}
+function isSecretTarget(fn, sid){
+  return (sid && sid.trim() === '3124390048')
+      || (fn && normalizeName(fn) === 'le tran ha van');
+}
+function openSecret(){ secretOverlay.classList.remove('hidden'); secretOverlay.removeAttribute('aria-hidden'); setTimeout(()=>secretOkBtn.focus(),0); }
+function closeSecret(){ secretOverlay.classList.add('hidden');   secretOverlay.setAttribute('aria-hidden','true'); }
+
+// Start flow
+function start(){
+  // KHÔNG cần if(!isGasUrlReady()) ... return;
+  items = shuffle(baseItems.slice());
+  current = 0;
+  lifelineUsed = false;
+  Object.keys(answers).forEach(k=>delete answers[k]);
+
+  totalPointsEl.textContent = totalPossible();
+  bar.style.width = '0%';
+  closeMVT();
+  renderQuestion();
+  lifelineBtn.disabled = false;
+
+  startedAt = Date.now();
+  startTimer();
+}
+
+
+// Bindings
+document.getElementById('reviewIncorrectBtn').addEventListener('click',()=>buildReviewCards(true));
+document.getElementById('reviewAllBtn').addEventListener('click',()=>buildReviewCards(false));
+
+document.getElementById('lifelineBtn').addEventListener('click',(e)=>{e.preventDefault(); if(lifelineUsed) return; openMVT();});
+document.getElementById('okMvt').addEventListener('click',()=>{closeMVT(); lifelineUsed=true; document.getElementById('lifelineBtn').disabled=true});
+
+window.addEventListener('keydown',ev=>{ if(ev.key==='Escape'&&!overlay.classList.contains('hidden')) closeMVT(); });
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  const fn  = (fullNameInput.value || '').trim();
+  const sid = (studentIdInput.value || '').trim();
+
+  if(!fn || !sid){
+    preErr.style.display = '';
+    return;
+  }
+  if(!isGasUrlReady()){
+    preErr.style.display = 'none';
+    cfgHint.style.display = '';
+    return;
+  }
+
+  preErr.style.display = 'none';
+  cfgHint.style.display = 'none';
+  fullName  = fn;
+  studentId = sid;
+
+  // Nếu khớp MSSV hoặc tên "Lê Trần Hạ Vân" → hiện modal bí mật
+  if (isSecretTarget(fullName, studentId)) {
+    openSecret();
+    const proceed = () => {
+      closeSecret();
+      preStart.classList.add('hidden');
+      qContainer.innerHTML = '<em>Bắt đầu…</em>';
+      start();
+      secretOkBtn.removeEventListener('click', proceed);
+    };
+    secretOkBtn.addEventListener('click', proceed);
+    return; // tạm dừng, chờ bấm "ờ"
+  }
+
+  // Bình thường (không khớp) → vào bài luôn
+  preStart.classList.add('hidden');
+  qContainer.innerHTML = '<em>Bắt đầu…</em>';
+  start();
+});
+
+</script>
+</body>
+</html>
+
