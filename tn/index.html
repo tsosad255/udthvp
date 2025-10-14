@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 1 & 2 – Weighted Quiz (One-by-one)</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb;
+    --accent:#22d3ee; --accent-2:#60a5fa; --correct:#10b981; --wrong:#ef4444; --warn:#f59e0b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0; background:linear-gradient(180deg,#0b1220, #0f172a 35%, #0b1220 100%); color:var(--text); font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial}
+  .container{max-width:980px;margin:24px auto;padding:20px}
+  .card{background:rgba(17,24,39,.7);backdrop-filter: blur(6px); border:1px solid rgba(148,163,184,.15); border-radius:16px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  h1{font-size:clamp(22px,3.5vw,34px);margin:0 0 6px}
+  p.lead{color:var(--muted);margin:.25rem 0 1rem}
+  .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px}
+  .badge{border:1px solid rgba(148,163,184,.2);padding:4px 10px;border-radius:999px;color:var(--muted);font-size:.85rem}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  button{appearance:none; border:1px solid transparent; background:var(--accent-2); color:#081028; font-weight:700; padding:10px 14px; border-radius:12px; cursor:pointer; transition:.2s ease}
+  button.secondary{background:transparent; border-color:rgba(148,163,184,.35); color:var(--text)}
+  button:disabled{opacity:.55; cursor:not-allowed}
+  .progress{height:10px; background:rgba(148,163,184,.2); border-radius:999px; overflow:hidden}
+  .bar{height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-2)); transition:width .25s ease}
+  .qwrap{border:1px solid rgba(148,163,184,.18); border-radius:14px; padding:16px; min-height:180px}
+  .qwrap h3{margin:0 0 8px; font-size:1.02rem}
+  .difficulty{font-size:.8rem; color:var(--muted)}
+  .options{display:grid; gap:10px; margin-top:12px}
+  label.opt{display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid rgba(148,163,184,.2); border-radius:12px; cursor:pointer; transition:.2s ease}
+  label.opt:hover{border-color:var(--accent)}
+  input[type=radio]{transform:translateY(2px)}
+  .hint{color:var(--muted); font-size:.9rem; margin-top:8px}
+  .result{margin-top:16px; padding:14px; border-radius:12px; background:rgba(96,165,250,.08); border:1px dashed rgba(96,165,250,.35)}
+  .hidden{display:none!important}
+  .overlay.hidden{display:none!important}
+  .review{margin-top:18px; display:grid; gap:14px}
+  .rev-card{border:1px solid rgba(148,163,184,.2); border-radius:14px; padding:14px; background:rgba(17,24,39,.55)}
+  .rev-title{margin:0 0 6px; font-size:1rem}
+  .explain{color:var(--muted); font-size:.95rem; margin-top:6px}
+  .pill{display:inline-block; padding:2px 8px; border-radius:999px; font-size:.78rem; border:1px solid rgba(148,163,184,.3); color:var(--muted)}
+  .pill.correct{border-color:rgba(16,185,129,.5); color:#c8ffe3}
+  .pill.wrong{border-color:rgba(239,68,68,.6); color:#ffd2d2}
+  .foot{margin-top:8px; color:var(--muted); font-size:.85rem}
+  .overlay{position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center}
+  .modal{background:var(--panel); border:1px solid rgba(148,163,184,.25); border-radius:16px; padding:18px; max-width:420px; width:92%}
+  .modal h4{margin:0 0 8px}
+  .modal p{margin:8px 0 14px}
+  .badge.warn{ border-color: rgba(245,158,11,.5); color: var(--warn); }
+  .prestart{border:1px dashed rgba(148,163,184,.3); border-radius:14px; padding:14px; background:rgba(17,24,39,.55); margin-top:12px}
+  .pre-grid{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+  .prestart label{font-size:.9rem; color:var(--muted)}
+  .prestart input{width:100%; padding:10px 12px; border-radius:10px; background:#0b1220; border:1px solid rgba(148,163,184,.25); color:var(--text)}
+  .error{color:#ffd2d2; font-size:.9rem; margin-top:6px}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Unit 1 & 2 – Weighted Multiple-Choice Quiz</h1>
+
+      <div class="meta">
+        <span class="badge">Weights → Easy: 1 • Medium: 2 • Hard: 3</span>
+        <span class="badge">Total Possible Points: <span id="totalPoints">—</span></span>
+        <span class="badge" id="timerBadge" aria-live="polite" title="Thời gian còn lại">⏳ 03:00</span>
+        <div class="row" style="margin-left:auto">
+          <button id="lifelineBtn" type="button" title="Hỏi MVT" aria-haspopup="dialog" aria-controls="overlay">🆘 Nhờ Chuyên Gia</button>
+        </div>
+        <!-- Secret Modal -->
+<div id="secretOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="secretTitle" aria-hidden="true">
+  <div class="modal" role="document">
+    <h4 id="secretTitle">Thông báo</h4>
+    <p><strong>Bạn T giấu tên muốn hẹn bạn trong giờ giải lao để tỏ tình</strong></p>
+    <div class="row" style="justify-content:flex-end">
+      <button id="secretOkBtn" type="button" autofocus>ờ</button>
+    </div>
+  </div>
+</div>
+
+      </div>
+
+      <div id="preStart" class="prestart">
+        <div class="pre-grid">
+          <div>
+            <label for="fullName">Họ và tên</label>
+            <input id="fullName" type="text" placeholder="VD: Nguyễn Trần Hữu Thành" autocomplete="name"/>
+          </div>
+          <div>
+            <label for="studentId">MSSV</label>
+            <input id="studentId" type="text" placeholder="VD: 3124390000" autocomplete="off"/>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px; gap:12px">
+          <button id="startBtn" type="button">Bắt đầu làm bài</button>
+          <span id="preErr" class="error" style="display:none">Vui lòng nhập đủ Họ tên và MSSV.</span>
+          <span id="cfgHint" class="error" style="display:none">Bạn chưa dán đúng URL Web App (xem hướng dẫn phía dưới).</span>
+        </div>
+      </div>
+
+      <div class="progress" aria-label="progress" style="margin-top:12px"><div id="bar" class="bar"></div></div>
+
+      <section id="qContainer" class="qwrap" aria-live="polite">
+        <em>Nhập thông tin rồi bấm “Bắt đầu làm bài”.</em>
+      </section>
+
+      <div id="result" class="result hidden" role="status" aria-live="polite"></div>
+
+      <div class="row hidden" id="reviewButtons" style="margin-top:10px">
+        <button id="reviewIncorrectBtn" type="button" class="secondary">Xem lại câu trả lời sai</button>
+        <button id="reviewAllBtn" type="button" class="secondary">Xem lại tất cả câu trả lời</button>
+      </div>
+
+      <section id="reviewPanel" class="review hidden" aria-label="Review"></section>
+
+      <p class="foot">Lưu ý: Kết quả sẽ được tự động gửi sau khi hết giờ.</p>
+    </div>
+  </div>
+
+  <!-- Lifeline Modal -->
+  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mvtTitle" aria-hidden="true" style="z-index:1000;">
+    <div class="modal" role="document">
+      <h4 id="mvtTitle">Tìm được chuyên gia: MVT</h4>
+      <p><strong>Thông tin liên hệ: 500k TSOSAD255 MBBANK</strong></p>
+      <div class="row" style="justify-content:flex-end">
+        <button id="okMvt" type="button" autofocus>OK</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ===============================
+// CONFIG: Hardcode Apps Script Web App URL here
+// ===============================
+const CONFIG = {
+  // !!! THAY THẾ CHUỖI DƯỚI ĐÂY BẰNG URL WEB APP (đuôi /exec) CỦA BẠN !!!
+  gasUrl: 'https://script.google.com/macros/s/AKfycbzIP11w3_If2yMymYfovQJgVV1m3dkL9rLaKHWmKtCDeL_iwHuB0c2u-etVPjzbXCw/exec'
+};
+
+// Simple validator for placeholder replacement
+function isGasUrlReady(){
+  return typeof CONFIG.gasUrl === 'string'
+      && CONFIG.gasUrl.includes('/exec')
+      && !CONFIG.gasUrl.includes('REPLACE_WITH_YOUR_EXEC_ID');
+}
+
+// ===============================
+// Quiz data (base order)
+// ===============================
+const baseQuiz = [
+  { id:'q1', difficulty:'medium', weight:2,
+    question:'Which of the following is NOT one of the new trends in libraries and information centers?',
+    options:[
+      'The growth of electronic and Internet sources',
+      'The globalization of information',
+      'A return to print-only collections and closed access',
+      'A customer-centered approach to service'
+    ],
+    correctIndex:2,
+    explanationEN:'Slides list growth of electronic/Internet sources, globalization, and customer-centered service as trends. They also indicate a shift toward open access and digital, not a return to print-only closed access.',
+    explanationVI:'Slide liệt kê: tăng trưởng nguồn điện tử/Internet, toàn cầu hoá và dịch vụ hướng khách hàng. Đồng thời nhấn mạnh dịch chuyển sang truy cập mở và số hoá, nên “quay về chỉ ấn phẩm in & truy cập đóng” là ngược xu hướng.'
+  },
+  { id:'q2', difficulty:'easy', weight:1,
+    question:'What is the main subject of Unit 1?',
+    options:[
+      'Roles of libraries and information centers in modern society',
+      'Basic skills and competencies of library/information center managers',
+      'Information institutions, libraries, and information centers',
+      'Cataloguing and classification principles'
+    ],
+    correctIndex:2,
+    explanationEN:'The Unit 1 title explicitly states “Information institutions, libraries, and information centers.”',
+    explanationVI:'Tiêu đề Unit 1 ghi rõ “Các thiết chế thông tin, thư viện và trung tâm thông tin.”'
+  },
+  { id:'q3', difficulty:'easy', weight:1,
+    question:'Which of the following is one of the five basic types of libraries?',
+    options:[ 'Community Outreach Centre','Digital Data Bank','National Library','Knowledge Broker Agency' ],
+    correctIndex:2,
+    explanationEN:'The slides list five basic library types (Academic, Research/Special, School, Public, National). “National Library” is included.',
+    explanationVI:'Slide liệt kê 5 loại thư viện cơ bản (Học thuật, Nghiên cứu/Chuyên biệt, Trường học, Công cộng, Quốc gia). “Thư viện Quốc gia” nằm trong danh sách.'
+  },
+  { id:'q4', difficulty:'medium', weight:2,
+    question:'According to the slides, what best characterizes the shift in information access in the modern era?',
+    options:[
+      'From open access to closed access',
+      'From print to digital and from closed to open access',
+      'From digital to analog microform-only',
+      'From decentralized to fully centralized systems'
+    ],
+    correctIndex:1,
+    explanationEN:'The slides describe a dual shift: from print to digital and from closed to open access.',
+    explanationVI:'Slides mô tả dịch chuyển kép: từ in sang số và từ truy cập đóng sang truy cập mở.'
+  },
+  { id:'q5', difficulty:'hard', weight:3,
+    question:'Which professional role plans the ILS, maintains software/hardware, handles OPAC and data migration, and trains staff and users?',
+    options:[ 'Outreach Librarian','System Librarian','Archivist','Collection Development Librarian' ],
+    correctIndex:1,
+    explanationEN:'Only the System Librarian role matches the technical scope (ILS/OPAC, data migration, software/hardware, training).',
+    explanationVI:'Chỉ “System Librarian” khớp đầy đủ nhiệm vụ kỹ thuật (ILS/OPAC, di trú dữ liệu, phần mềm/phần cứng, đào tạo).'
+  }
+];
+
+// Utility
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+// State
+let quiz = [];
+let current = 0;
+let answers = {};
+let lifelineUsed = false;
+let fullName = '';
+let studentId = '';
+
+const totalPointsEl = document.getElementById('totalPoints');
+const qContainer = document.getElementById('qContainer');
+const bar = document.getElementById('bar');
+const resultEl = document.getElementById('result');
+const reviewBtns = document.getElementById('reviewButtons');
+const reviewIncorrectBtn = document.getElementById('reviewIncorrectBtn');
+const reviewAllBtn = document.getElementById('reviewAllBtn');
+const reviewPanel = document.getElementById('reviewPanel');
+const lifelineBtn = document.getElementById('lifelineBtn');
+const overlay = document.getElementById('overlay');
+const okMvt = document.getElementById('okMvt');
+const secretOverlay = document.getElementById('secretOverlay');
+const secretOkBtn   = document.getElementById('secretOkBtn');
+const timerBadge = document.getElementById('timerBadge');
+
+const preStart = document.getElementById('preStart');
+const startBtn = document.getElementById('startBtn');
+const fullNameInput = document.getElementById('fullName');
+const studentIdInput = document.getElementById('studentId');
+const preErr = document.getElementById('preErr');
+const cfgHint = document.getElementById('cfgHint');
+
+
+// ====== Timer (5 minutes) & Auto-submit ======
+const LIMIT_MS = 3 * 60 * 1000;
+let deadline = 0, timerId = null, finished = false, timeUp = false, startedAt = 0;
+
+function fmtTime(ms){ if(ms<0) ms=0; const t=Math.floor(ms/1000); const m=Math.floor(t/60); const s=t%60; return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); }
+function updateTimer(){
+  const left = deadline - Date.now();
+  if(timerBadge){ if(left<=30000) timerBadge.classList.add('warn'); else timerBadge.classList.remove('warn'); timerBadge.textContent='⏳ '+fmtTime(left); }
+  if(left<=0){ stopTimer(); timeUp=true; autoSubmit(); }
+}
+function startTimer(){ stopTimer(); startedAt=Date.now(); deadline=startedAt+LIMIT_MS; timerId=setInterval(updateTimer,250); updateTimer(); }
+function stopTimer(){ if(timerId){ clearInterval(timerId); timerId=null; } }
+function disableQuizInputs(){ qContainer.querySelectorAll('input[type=radio]').forEach(el=>el.disabled=true); lifelineBtn.disabled=true; }
+function autoSubmit(){ if(finished) return; disableQuizInputs(); qContainer.innerHTML='<em>⏱️ Hết giờ — hệ thống đã tự động nộp bài.</em>'; finish(); }
+
+// ====== Google Sheets (Apps Script Web App) ======
+async function sendToSheets(payload){
+  if(!isGasUrlReady()) throw new Error('URL Apps Script chưa được dán cứng trong file.');
+  let res=null;
+  try{
+    res = await fetch(CONFIG.gasUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload), mode:'cors', redirect:'follow' });
+  }catch(e){/*ignore*/}
+  if(res && res.ok){
+    const t = await res.text().catch(()=>'');
+    return t || 'OK';
+  }else{
+    await fetch(CONFIG.gasUrl, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload), mode:'no-cors' });
+    return 'SENT_OPAQUE';
+  }
+}
+
+function totalPossiblePoints(){ return quiz.reduce((s,q)=>s+q.weight,0); }
+function renderProgress(){ const pct = Math.round((current/quiz.length)*100); bar.style.width = pct + '%'; }
+
+function renderQuestion(){
+  renderProgress();
+  reviewPanel.classList.add('hidden'); reviewBtns.classList.add('hidden'); resultEl.classList.add('hidden');
+  const q = quiz[current]; const qNumber = current + 1;
+  qContainer.innerHTML='';
+  const title=document.createElement('h3'); title.innerHTML=`<span style="opacity:.9">Câu ${qNumber}/${quiz.length}.</span> ${q.question}`;
+  const diff=document.createElement('div'); diff.className='difficulty'; diff.textContent=`Độ khó: ${q.difficulty} • Trọng số: ${q.weight}`;
+  const opts=document.createElement('div'); opts.className='options';
+  q.options.forEach((opt,oi)=>{
+    const id=`${q.id}_${oi}`;
+    const label=document.createElement('label'); label.className='opt'; label.setAttribute('for',id);
+    const radio=document.createElement('input'); radio.type='radio'; radio.name=q.id; radio.id=id; radio.value=String(oi);
+    const text=document.createElement('div'); const letter=String.fromCharCode(65+oi); text.innerHTML=`<strong>${letter}.</strong> ${opt}`;
+    radio.addEventListener('change', ()=>{ answers[q.id]=oi; label.style.borderColor='var(--accent)'; setTimeout(()=>{ nextStep(); }, 200); });
+    label.appendChild(radio); label.appendChild(text); opts.appendChild(label);
+  });
+  qContainer.appendChild(title); qContainer.appendChild(diff); qContainer.appendChild(opts);
+  const hint=document.createElement('div'); hint.className='hint'; hint.textContent='Chọn một đáp án để tiếp tục…'; qContainer.appendChild(hint);
+}
+
+function scoreQuiz(){
+  let earned=0, correctCount=0; const detail={};
+  quiz.forEach(q=>{ const pick=answers[q.id]; const ok = pick===q.correctIndex; if(ok){ earned+=q.weight; correctCount++; } detail[q.id]={isCorrect:ok, picked:(pick??null), correctIndex:q.correctIndex}; });
+  const total=totalPossiblePoints(); const percent=Math.round((earned/total)*100);
+  return {earned,total,percent,correctCount,detail};
+}
+
+function buildAttemptPayload(summary){
+  const endedAt = Date.now(); const durationMs = Math.max(0, endedAt - startedAt);
+  return {
+    attemptId: String(endedAt)+'-'+Math.random().toString(36).slice(2,8),
+    timeStartISO: new Date(startedAt).toISOString(),
+    timeEndISO: new Date(endedAt).toISOString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    durationMs, timeUp,
+    score: summary.earned, totalPoints: summary.total, percent: summary.percent,
+    correctCount: summary.correctCount, totalQuestions: quiz.length,
+    answers: quiz.map(q=>{ const pick=answers[q.id]; return {id:q.id, picked:(pick??null), correctIndex:q.correctIndex, weight:q.weight, isCorrect:(pick===q.correctIndex)}; }),
+    fullName, studentId, userAgent: navigator.userAgent
+  };
+}
+
+function finish(){
+  stopTimer(); finished=true;
+  const summary=scoreQuiz(); bar.style.width='100%';
+  resultEl.classList.remove('hidden');
+  resultEl.innerHTML = `
+    ${timeUp ? '<div class="badge warn">⏱️ Time up — auto-submitted</div>' : ''}
+    <div><strong>Kết quả:</strong> ${summary.earned} điểm</div>
+    <div style="color:var(--muted)">Chi tiết: ${summary.earned} / ${summary.total} điểm (${summary.percent}%). Đúng: ${summary.correctCount}/${quiz.length}.</div>
+    <div style="color:var(--muted)">Người làm: <strong>${escapeHtml(fullName)}</strong> • MSSV: <strong>${escapeHtml(studentId)}</strong></div>
+    <div id="sendStatus" style="margin-top:8px;color:var(--muted)"><em>Đang gửi kết quả…</em></div>
+  `;
+  reviewBtns.classList.remove('hidden');
+  (async()=>{
+    try{ const payload=buildAttemptPayload(summary); await sendToSheets(payload); const el=document.getElementById('sendStatus'); if(el) el.innerHTML='✅ Đã gửi kết quả thành công.'; }
+    catch(err){ const el=document.getElementById('sendStatus'); if(el) el.innerHTML='⚠️ Không gửi được kết quả. Kiểm tra URL Web App và quyền truy cập.'; console.error('Send error:', err); }
+  })();
+}
+
+function buildReviewCards(filterFn){
+  reviewPanel.innerHTML=''; const summary=scoreQuiz();
+  quiz.forEach((q,qi)=>{
+    const row=summary.detail[q.id]; if(!filterFn(row)) return;
+    const card=document.createElement('div'); card.className='rev-card';
+    const title=document.createElement('h4'); title.className='rev-title'; title.textContent=`Câu ${qi+1}. ${q.question}`;
+    const userPickIdx=row.picked; const userPickTxt=(userPickIdx!==null && userPickIdx!==undefined)?`${String.fromCharCode(65+userPickIdx)}. ${q.options[userPickIdx]}`:'— (chưa chọn)';
+    const correctTxt=`${String.fromCharCode(65+q.correctIndex)}. ${q.options[q.correctIndex]}`;
+    const status=document.createElement('div'); status.innerHTML=row.isCorrect?`<span class="pill correct">Đúng</span>`:`<span class="pill wrong">Sai</span>`;
+    const picked=document.createElement('div'); picked.innerHTML=`<strong>Đáp án của bạn:</strong> ${userPickTxt}`;
+    const correct=document.createElement('div'); correct.innerHTML=`<strong>Đáp án đúng:</strong> ${correctTxt}`;
+    const explain=document.createElement('div'); explain.className='explain'; explain.innerHTML=`<em>Why?</em> ${q.explanationEN}<br/><em>Giải thích (VI):</em> ${q.explanationVI}`;
+    const foot=document.createElement('div'); foot.className='foot'; foot.textContent=`Độ khó: ${q.difficulty} • Trọng số: ${q.weight}`;
+    card.appendChild(title); card.appendChild(status); card.appendChild(picked); card.appendChild(correct); card.appendChild(explain); card.appendChild(foot);
+    reviewPanel.appendChild(card);
+  });
+  reviewPanel.classList.remove('hidden');
+}
+
+function nextStep(){ current++; if(current<quiz.length){ renderQuestion(); } else { qContainer.innerHTML='<em>Đã trả lời hết các câu hỏi.</em>'; finish(); } }
+
+function openMVT(){ overlay.classList.remove('hidden'); overlay.removeAttribute('aria-hidden'); setTimeout(()=>{ okMvt.focus(); },0); }
+function closeMVT(){ overlay.classList.add('hidden'); overlay.setAttribute('aria-hidden','true'); }
+function normalizeName(s){
+  return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/\s+/g,' ').trim();
+}
+function isSecretTarget(fn, sid){
+  return (sid && sid.trim() === '3124390048')
+      || (fn && normalizeName(fn) === 'le tran ha van');
+}
+function openSecret(){ secretOverlay.classList.remove('hidden'); secretOverlay.removeAttribute('aria-hidden'); setTimeout(()=>secretOkBtn.focus(),0); }
+function closeSecret(){ secretOverlay.classList.add('hidden');   secretOverlay.setAttribute('aria-hidden','true'); }
+
+function start(){
+  if(!isGasUrlReady()){
+    cfgHint.style.display=''; return;
+  }
+  cfgHint.style.display='none';
+  quiz = shuffle(baseQuiz.slice());
+  answers = {}; current=0; lifelineUsed=false; lifelineBtn.disabled=false; finished=false; timeUp=false;
+  totalPointsEl.textContent = totalPossiblePoints(); bar.style.width='0%'; closeMVT();
+  startTimer(); renderQuestion();
+}
+
+startBtn.addEventListener('click', ()=>{
+  const fn  = (fullNameInput.value || '').trim();
+  const sid = (studentIdInput.value || '').trim();
+
+  if(!fn || !sid){
+    preErr.style.display = '';
+    return;
+  }
+  if(!isGasUrlReady()){
+    preErr.style.display = 'none';
+    cfgHint.style.display = '';
+    return;
+  }
+
+  preErr.style.display = 'none';
+  cfgHint.style.display = 'none';
+  fullName  = fn;
+  studentId = sid;
+
+  // Nếu khớp MSSV hoặc tên "Lê Trần Hạ Vân" → hiện modal bí mật
+  if (isSecretTarget(fullName, studentId)) {
+    openSecret();
+    const proceed = () => {
+      closeSecret();
+      preStart.classList.add('hidden');
+      qContainer.innerHTML = '<em>Bắt đầu…</em>';
+      start();
+      secretOkBtn.removeEventListener('click', proceed);
+    };
+    secretOkBtn.addEventListener('click', proceed);
+    return; // tạm dừng, chờ bấm "ờ"
+  }
+
+  // Bình thường (không khớp) → vào bài luôn
+  preStart.classList.add('hidden');
+  qContainer.innerHTML = '<em>Bắt đầu…</em>';
+  start();
+});
+
+
+(function preloadSaved(){
+  // optional: prefill from localStorage if needed later
+})();
+
+lifelineBtn.addEventListener('click', (e)=>{ e.preventDefault(); if(lifelineUsed) return; openMVT(); });
+okMvt.addEventListener('click', ()=>{ closeMVT(); lifelineUsed=true; lifelineBtn.disabled=true; });
+window.addEventListener('keydown', (ev)=>{ if(ev.key==='Escape' && !overlay.classList.contains('hidden')) closeMVT(); });
+
+reviewIncorrectBtn.addEventListener('click', ()=>{ buildReviewCards(row=>!row.isCorrect); });
+reviewAllBtn.addEventListener('click', ()=>{ buildReviewCards(()=>true); });
+
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+</script>
+</body>
+</html>
