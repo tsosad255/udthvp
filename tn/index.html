@@ -71,7 +71,7 @@
 <div id="secretOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="secretTitle" aria-hidden="true">
   <div class="modal" role="document">
     <h4 id="secretTitle">Thông báo</h4>
-    <p><strong>Bạn T giấu tên muốn hẹn bạn trong giờ giải lao để tỏ tình</strong></p>
+    <p><strong>ê có điền nhầm tên không z bà</strong></p>
     <div class="row" style="justify-content:flex-end">
       <button id="secretOkBtn" type="button" autofocus>ờ</button>
     </div>
@@ -356,8 +356,8 @@ function normalizeName(s){
     .toLowerCase().replace(/\s+/g,' ').trim();
 }
 function isSecretTarget(fn, sid){
-  return (sid && sid.trim() === '3124390048')
-      || (fn && normalizeName(fn) === 'le tran ha van');
+  return (sid && sid.trim() === '3124390035')
+      || (fn && normalizeName(fn) === 'mai van thanh');
 }
 function openSecret(){ secretOverlay.classList.remove('hidden'); secretOverlay.removeAttribute('aria-hidden'); setTimeout(()=>secretOkBtn.focus(),0); }
 function closeSecret(){ secretOverlay.classList.add('hidden');   secretOverlay.setAttribute('aria-hidden','true'); }
