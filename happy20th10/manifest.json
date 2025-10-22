@@ -1,0 +1,22 @@
+{
+    "name": "Chúc Mừng 20/10 - Bé Munn",
+    "short_name": "20/10 Bé Munn",
+    "description": "Website chúc mừng ngày Phụ nữ Việt Nam 20/10",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fdf2f8",
+    "theme_color": "#fdf2f8",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💖%3C/text%3E%3C/svg%3E",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💖%3C/text%3E%3C/svg%3E",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        }
+    ]
+}
