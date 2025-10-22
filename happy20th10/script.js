@@ -1,6 +1,65 @@
 // Interactive elements and animations
 document.addEventListener('DOMContentLoaded', function() {
-    
+    document.addEventListener('DOMContentLoaded', function () {
+  const bgm = document.getElementById('bgm');
+  const musicBtn = document.getElementById('musicToggle');
+
+  if (!bgm || !musicBtn) return;
+
+  // Âm lượng mặc định nhỏ để dễ chịu
+  bgm.volume = 0.35;
+
+  // iOS/Chrome mobile chặn autoplay có âm thanh.
+  // Ta thử play() khi có lần chạm đầu tiên.
+  const unlockAudio = async () => {
+    try {
+      // Cách 1: khởi chạy im lặng để "mở khóa" audio
+      bgm.muted = true;
+      await bgm.play();
+      // Sau khi đã mở khóa bằng tương tác user, bỏ mute (chưa phát to cho đến khi user bấm nút)
+      await bgm.pause();
+      bgm.currentTime = 0;
+      bgm.muted = false;
+    } catch (e) {
+      // bỏ qua lỗi, người dùng có thể bấm nút để phát
+    } finally {
+      window.removeEventListener('pointerdown', unlockAudio, { capture: true });
+    }
+  };
+  window.addEventListener('pointerdown', unlockAudio, { capture: true, once: true });
+
+  // Toggle phát / tạm dừng khi bấm nút
+  const updateIcon = () => {
+    const playing = !bgm.paused && !bgm.ended;
+    musicBtn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    musicBtn.textContent = playing ? '🔊' : '🔈';
+  };
+
+  musicBtn.addEventListener('click', async () => {
+    try {
+      if (bgm.paused) {
+        await bgm.play();
+      } else {
+        bgm.pause();
+      }
+    } catch (e) {
+      // Nếu vẫn bị chặn, thử unmute rồi play sau khi user vừa click
+      bgm.muted = false;
+      try { await bgm.play(); } catch (_) {}
+    }
+    updateIcon();
+  });
+
+  // Tùy chọn: tạm dừng khi tab ẩn đi để tiết kiệm pin
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !bgm.paused) bgm.pause();
+    updateIcon();
+  });
+
+  // Đồng bộ icon lúc đầu
+  updateIcon();
+});
+
     // Detect mobile device
     const isMobile = window.innerWidth <= 768;
     const isSmallMobile = window.innerWidth <= 480;
