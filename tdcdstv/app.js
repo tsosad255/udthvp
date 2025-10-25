@@ -11,8 +11,8 @@ const CONFIG = {
     TH: 4,  // Thông hiểu
     SL: 2   // Suy luận nhẹ
   },
-  GOOGLE_SHEETS_ENDPOINT: "", // dán URL Web App (Apps Script) vào đây
-  REQUIRE_CONSENT: false,     // nếu true: bắt buộc tick đồng ý mới cho bắt đầu
+  GOOGLE_SHEETS_ENDPOINT: "https://script.google.com/macros/s/AKfycbzU0KJ-N6fu8AG6JT-ltSkUz-jS8H4HduNGKZoOBO7Mk8X6Ps3UeGlmwlcja27uTH7J/exec", 
+  REQUIRE_CONSENT: true,     // nếu true: bắt buộc tick đồng ý mới cho bắt đầu
   THEME: "dark"               // "dark" hoặc "light"
 };
 
