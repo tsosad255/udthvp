@@ -3,7 +3,8 @@ const CONFIG = {
   QUESTIONS_PER_GAME: 10,
   TIME_PER_QUESTION: 30, // giây
   BASE_POINTS: 10,        // điểm cơ bản cho mỗi câu đúng
-  MAX_SPEED_BONUS: 10,    // bonus tối đa nếu trả lời ngay lập tức. Đặt 0 nếu không muốn bonus
+  MAX_SPEED_BONUS: 10,
+  AUTO_NEXT_SECONDS: 10,    // tự động sang câu tiếp theo sau khi chấm (giây)    // bonus tối đa nếu trả lời ngay lập tức. Đặt 0 nếu không muốn bonus
   SHUFFLE_QUESTIONS: true,
   SHUFFLE_OPTIONS: true,  // trộn thứ tự đáp án trong mỗi câu
   DIFFICULTY_QUOTAS: {    // đảm bảo mức độ khó đồng đều giữa các phiên
@@ -27,7 +28,9 @@ const state = {
   timer: { remain: CONFIG.TIME_PER_QUESTION, id: null },
   score: { base: 0, speedBonus: 0, get total(){ return this.base + this.speedBonus } },
   answers: [], // [{id, prompt, chosenIndex, correctIndex, correct, base, bonus, elapsedSec, tags, explanation }]
-  rng: null
+  rng: null,
+  locked: false,
+  autoNextId: null
 };
 
 // ====== Tiện ích ======
@@ -177,6 +180,38 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // ====== Gameplay ======
+
+function lockQuestion(){
+  state.locked = true;
+  const ol = $("#options");
+  if (ol) ol.classList.add("locked");
+  $$("#options .option").forEach(el => el.setAttribute("aria-disabled","true"));
+}
+function unlockQuestion(){
+  state.locked = false;
+  const ol = $("#options");
+  if (ol) ol.classList.remove("locked");
+  $$("#options .option").forEach(el => el.removeAttribute("aria-disabled"));
+}
+function startAutoNextCountdown(){
+  clearInterval(state.autoNextId);
+  const seconds = CONFIG.AUTO_NEXT_SECONDS || 0;
+  if (seconds <= 0) return;
+  let remain = seconds;
+  const btn = $("#btnNext");
+  btn.disabled = false;
+  btn.textContent = `Tiếp tục • ${remain}s`;
+  state.autoNextId = setInterval(()=>{
+    remain--;
+    if (remain <= 0) {
+      clearInterval(state.autoNextId);
+      nextQuestion();
+    } else {
+      btn.textContent = `Tiếp tục • ${remain}s`;
+    }
+  }, 1000);
+}
+
 function onStart() {
   const name = $("#inpName").value.trim();
   const mssv = $("#inpMssv").value.trim();
@@ -260,9 +295,13 @@ function renderCurrent() {
   $("#explanation").classList.add("hidden");
   $("#explanation").innerHTML = "";
   $("#btnNext").disabled = true;
+  clearInterval(state.autoNextId);
+  $("#btnNext").textContent = "Tiếp tục ▶";
+  unlockQuestion();
 }
 
 function onChoose(i) {
+  if (state.locked) return;
   const q = state.questions[state.currentIndex];
   if (!q) return;
 
@@ -309,6 +348,9 @@ function onChoose(i) {
 
   // Scroll explanation into view for mobile
   exp.scrollIntoView({ behavior: "smooth", block: "end" });
+
+  lockQuestion();
+  startAutoNextCountdown();
 
   // Lưu câu trả lời
   state.answers.push({
@@ -368,6 +410,9 @@ function onTimeout() {
 
   $("#btnNext").disabled = false;
 
+  lockQuestion();
+  startAutoNextCountdown();
+
   vibrate([60, 40, 60]); // haptic
 
   // Lưu
@@ -379,6 +424,8 @@ function onTimeout() {
 }
 
 function nextQuestion() {
+  clearInterval(state.autoNextId);
+  $("#btnNext").textContent = "Tiếp tục ▶";
   state.currentIndex += 1;
   if (state.currentIndex >= state.questions.length) {
     updateProgressLine(1);
