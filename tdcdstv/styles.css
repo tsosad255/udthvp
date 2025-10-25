@@ -298,3 +298,11 @@ body {
     gap: 4px;
   }
 }
+
+
+/* Fix after removing email field: tighten grid and wrap long strings */
+.player-review .kv { grid-template-columns: 120px 1fr; }
+@media (max-width: 480px) {
+  .player-review .kv { grid-template-columns: 100px 1fr; }
+}
+.summary-grid, .player-review, .stat, .review-list { overflow-wrap: anywhere; word-break: break-word; }

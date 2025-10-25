@@ -19,7 +19,7 @@ const CONFIG = {
 // ====== Trạng thái trò chơi ======
 const state = {
   sessionId: "",
-  player: { name: "", email: "", mssv: "" },
+  player: { name: "", mssv: "" },
   questions: [],
   startedAt: 0,
   totalElapsedSec: 0,
@@ -179,22 +179,21 @@ window.addEventListener("DOMContentLoaded", () => {
 // ====== Gameplay ======
 function onStart() {
   const name = $("#inpName").value.trim();
-  const email = $("#inpEmail").value.trim();
   const mssv = $("#inpMssv").value.trim();
   const consent = $("#inpConsent").checked;
 
-  if (!name || !email || !mssv) {
-    alert("Vui lòng nhập đầy đủ Họ tên, Email và MSSV.");
+  if (!name || !mssv) { alert("Vui lòng nhập đầy đủ Họ tên và MSSV."); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert("Email không hợp lệ.");
     return;
   }
-
   if (CONFIG.REQUIRE_CONSENT && !consent) {
     alert("Vui lòng xác nhận thông tin.");
     return;
   }
 
   state.sessionId = uuid();
-  state.player = { name, email, mssv };
+  state.player = { name, mssv };
   state.startedAt = Date.now();
   state.totalElapsedSec = 0;
   state.currentIndex = 0;
@@ -414,7 +413,7 @@ function showSummary() {
   $("#sumTime").textContent = `${state.totalElapsedSec}s`;
   $("#sumSession").textContent = state.sessionId;
   $("#sumName").textContent = state.player.name;
-  $("#sumEmail").textContent = state.player.email;
+  
   $("#sumMssv").textContent = state.player.mssv;
 
   const list = $("#reviewList");
@@ -450,7 +449,6 @@ function stripHTML(html) {
 // ====== Modal edit info ======
 function openEditModal() {
   $("#editName").value = state.player.name || "";
-  $("#editEmail").value = state.player.email || "";
   $("#editMssv").value = state.player.mssv || "";
   $("#modalMask").classList.remove("hidden");
   $("#editName").focus();
@@ -461,13 +459,13 @@ function closeEditModal() {
 function saveEditPlayer(e) {
   e && e.preventDefault && e.preventDefault();
   const name = $("#editName").value.trim();
-  const email = $("#editEmail").value.trim();
   const mssv = $("#editMssv").value.trim();
-  if (!name || !email || !mssv) { alert("Vui lòng nhập đầy đủ Họ tên, Email, MSSV."); return; }
+  if (!name || !mssv) { alert("Vui lòng nhập đầy đủ Họ tên và MSSV."); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("Email không hợp lệ."); return; }
 
-  state.player = { name, email, mssv };
+  state.player = { name, mssv };
   $("#sumName").textContent = name;
-  $("#sumEmail").textContent = email;
+  
   $("#sumMssv").textContent = mssv;
 
   closeEditModal();
