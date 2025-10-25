@@ -203,7 +203,7 @@ body {
 
 /* Thêm một fade nhỏ ngay phía trên nút, chỉ cao 48px để tách nội dung */
 .actions.sticky { position: sticky; }
-.actions.sticky::before {
+.actions.sticky {
   content: "";
   position: absolute;
   left: 0; right: 0;
