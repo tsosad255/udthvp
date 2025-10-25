@@ -192,7 +192,7 @@ function onStart() {
     return;
   }
   if (CONFIG.REQUIRE_CONSENT && !consent) {
-    alert("Vui lòng đồng ý cho phép lưu trữ kết quả để tiếp tục.");
+    alert("Vui lòng xác nhận thông tin.");
     return;
   }
 
@@ -212,7 +212,7 @@ function onStart() {
   // Lấy câu hỏi theo quota độ khó
   const bank = Array.isArray(window.QUESTION_BANK) ? window.QUESTION_BANK.slice() : [];
   if (bank.length === 0) {
-    alert("Chưa có câu hỏi trong QUESTION_BANK. Hãy mở file questions.js để thêm.");
+    alert("Chưa có câu hỏi trong QUESTION_BANK, hãy báo lại lỗi cho BTC.");
     return;
   }
 
@@ -496,7 +496,7 @@ function resetToLobby() {
 async function sendToSheets() {
   const endpoint = CONFIG.GOOGLE_SHEETS_ENDPOINT;
   if (!endpoint) {
-    alert("Chưa cấu hình GOOGLE_SHEETS_ENDPOINT trong app.js.\nHãy xem README.md để tạo Apps Script và dán URL vào.");
+    alert("Lỗi ENDPOINT hãy báo lại với BTC.");
     return;
   }
   $("#sendStatus").textContent = "Đang gửi...";
@@ -523,10 +523,10 @@ async function sendToSheets() {
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
-    $("#sendStatus").textContent = "Đã gửi yêu cầu. Mở Google Trang tính để kiểm tra dữ liệu.";
+    $("#sendStatus").textContent = "Đã gửi kết quả.";
   } catch (err) {
     console.error(err);
-    $("#sendStatus").textContent = "Gửi thất bại. Hãy kiểm tra cấu hình hoặc mạng.";
+    $("#sendStatus").textContent = "Gửi thất bại. Hãy kiểm tra mạng.";
   }
 }
 
