@@ -183,10 +183,7 @@ function onStart() {
   const consent = $("#inpConsent").checked;
 
   if (!name || !mssv) { alert("Vui lòng nhập đầy đủ Họ tên và MSSV."); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert("Email không hợp lệ.");
     return;
-  }
   if (CONFIG.REQUIRE_CONSENT && !consent) {
     alert("Vui lòng xác nhận thông tin.");
     return;
@@ -461,7 +458,6 @@ function saveEditPlayer(e) {
   const name = $("#editName").value.trim();
   const mssv = $("#editMssv").value.trim();
   if (!name || !mssv) { alert("Vui lòng nhập đầy đủ Họ tên và MSSV."); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("Email không hợp lệ."); return; }
 
   state.player = { name, mssv };
   $("#sumName").textContent = name;
