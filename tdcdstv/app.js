@@ -183,7 +183,6 @@ function onStart() {
   const consent = $("#inpConsent").checked;
 
   if (!name || !mssv) { alert("Vui lòng nhập đầy đủ Họ tên và MSSV."); return; }
-    return;
   if (CONFIG.REQUIRE_CONSENT && !consent) {
     alert("Vui lòng xác nhận thông tin.");
     return;
