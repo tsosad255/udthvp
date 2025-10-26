@@ -1,183 +1,183 @@
-// ===== Ngân hàng câu hỏi có phân mức độ khó (NB/TH/SL) =====
 window.QUESTION_BANK = [
   {
-    "id": "c1_q01",
-    "difficulty": "TH",
-    "topic": "dacdiem",
-    "prompt": "Điểm khác nhau cơ bản giữa <strong>số hoá</strong> và <strong>chuyển đổi số</strong> (CĐS) là gì?",
-    "options": [
-      "Số hoá chỉ quét tài liệu; CĐS là tái thiết kế quy trình, mô hình dịch vụ dựa trên số",
-      "Số hoá là đổi phần mềm; CĐS là mua thêm máy tính",
-      "Hai khái niệm giống nhau",
-      "CĐS chỉ dành cho doanh nghiệp, không liên quan thư viện"
-    ],
-    "answerIndex": 0,
-    "explanation": "Số hoá = chuyển analog → digital. CĐS = thay đổi tổng thể cách vận hành/dịch vụ dựa trên dữ liệu & công nghệ.",
-    "tags": [
-      "đặc điểm"
-    ]
-  },
-  {
-    "id": "c2_q01",
-    "difficulty": "TH",
-    "topic": "thachthuc",
-    "prompt": "Thách thức phổ biến khi triển khai CĐS trong thư viện công lập/đại học là:",
-    "options": [
-      "Chính sách dữ liệu, quyền riêng tư và đồng thuận người dùng",
-      "Thiếu tài liệu in",
-      "Không thể truy cập mạng Internet",
-      "Không còn cần thủ thư"
-    ],
-    "answerIndex": 0,
-    "explanation": "Quyền riêng tư/dữ liệu là rào cản lớn khi thu thập/khai thác dữ liệu người dùng cho cá nhân hoá.",
-    "tags": [
-      "thách thức"
-    ]
-  },
-  
-  
-  {
-    "id": "c3_q02",
+    "id": "cdx_01",
     "difficulty": "NB",
-    "topic": "cohoi",
-    "prompt": "Ví dụ nào là <strong>giá trị mới</strong> do CĐS mang lại cho người dùng?",
+    "topic": "phaply",
+    "prompt": "Quyết định số 206/QĐ-TTg ngày 11/2/2021 của Thủ tướng Chính phủ phê duyệt quyết định gì?",
     "options": [
-      "Theo dõi tình trạng mượn sách qua ứng dụng, nhận gợi ý tài liệu liên quan",
-      "Chỉ thêm ghế ngồi",
-      "Giảm số PC tra cứu",
-      "Tăng kích thước kệ sách"
+      "\"Chương trình chuyển đổi số ngành thư viện đến năm 2025, định hướng đến năm 2030\"",
+      "\"Chương trình phát triển Chính phủ điện tử giai đoạn 2021-2025, tầm nhìn 2030\"",
+      "\"Chiến lược quốc gia về phát triển văn hóa đọc đến năm 2025, định hướng đến năm 2030\"",
+      "\"Chương trình mục tiêu quốc gia về công nghệ thông tin giai đoạn 2021-2025\""
     ],
     "answerIndex": 0,
-    "explanation": "Ứng dụng + gợi ý liên quan cho trải nghiệm cá nhân hoá và tiện lợi — giá trị mới của CĐS.",
+    "explanation": "Quyết định 206/QĐ-TTg là văn bản pháp lý quan trọng, đặt mục tiêu, nhiệm vụ và giải pháp cụ thể cho việc hiện đại hóa và chuyển đổi số toàn diện của hệ thống thư viện Việt Nam.",
     "tags": [
-      "cơ hội"
+      "CĐS",
+      "Pháp lý",
+      "Thư viện"
     ]
   },
-  
   {
-    "id": "c4_q06",
+    "id": "cdx_02",
     "difficulty": "TH",
-    "topic": "chuanbi",
-    "prompt": "Thực hành tốt cho <strong>quản lý dự án CĐS</strong> trong thư viện là:",
+    "topic": "khainiem",
+    "prompt": "Chuyển đổi số là gì?",
     "options": [
-      "Chia nhỏ theo giai đoạn, thử nghiệm (pilot), đo lường KPIs, mở rộng dần",
-      "Triển khai toàn bộ cùng lúc",
-      "Bỏ qua phản hồi người dùng",
-      "Không cần kế hoạch đào tạo"
+      "Quá trình thay đổi tổng thể và toàn diện của cá nhân, tổ chức về cách sống, cách làm việc và phương thức sản xuất dựa trên các công nghệ số.",
+      "Quá trình quét và lưu trữ mọi tài liệu giấy lên máy chủ (đây là số hoá).",
+      "Chuyển mô hình kinh doanh truyền thống sang bán hàng trên sàn TMĐT (quá hẹp).",
+      "Mua sắm và cài đặt các phần mềm mới nhất để tăng năng suất (ứng dụng CNTT)."
     ],
     "answerIndex": 0,
-    "explanation": "Iterative + đo lường + pilot giúp giảm rủi ro và điều chỉnh theo thực tế.",
+    "explanation": "Chuyển đổi số (Digital Transformation) là sự thay đổi mang tính toàn diện về tư duy và cách thức hoạt động.",
     "tags": [
-      "chuẩn bị",
-      "quản trị"
+      "CĐS",
+      "Định nghĩa"
     ]
   },
   {
-    "id": "hp_q01",
+    "id": "cdx_03",
     "difficulty": "NB",
-    "topic": "hocphan",
-    "prompt": "Năng lực nào hỗ trợ trực tiếp CĐS?",
+    "topic": "nhiemvu",
+    "prompt": "Một trong những nhiệm vụ, giải pháp tạo nền móng chuyển đổi số ngành Thư viện là gì?",
     "options": [
-      "Hiểu mô hình tổ chức thư viện và vai trò phục vụ thông tin",
-      "Vẽ kỹ thuật cơ khí",
-      "Giải tích nâng cao",
-      "Hoá hữu cơ"
+      "Xây dựng và phát triển nền tảng số.",
+      "Tăng cường các buổi đọc sách và kể chuyện truyền thống.",
+      "Mở rộng diện tích kho sách và phòng đọc công cộng.",
+      "In ấn và phát hành thêm nhiều đầu sách giấy."
     ],
     "answerIndex": 0,
-    "explanation": "Hiểu bản chất nghề và tổ chức là nền tảng để tái thiết kế dịch vụ số theo nhu cầu người dùng.",
+    "explanation": "Nền tảng số (digital platforms) là hạ tầng phần mềm và phần cứng cốt lõi, là nền móng để lưu trữ, quản lý, và phổ biến tài nguyên số. Các phương án còn lại chủ yếu thuộc về hoạt động thư viện truyền thống.",
     "tags": [
-      "học phần"
+      "CĐS",
+      "Nhiệm vụ"
     ]
   },
-  
   {
-    "id": "sx_q03",
+    "id": "cdx_04",
     "difficulty": "SL",
-    "topic": "tinhhuong",
-    "prompt": "Để hỗ trợ người học mới, dịch vụ nào phù hợp tinh thần CĐS và học tập suốt đời?",
+    "topic": "thachthuc",
+    "prompt": "Khó khăn, thách thức trong quá trình chuyển đổi số thư viện là gì?",
     "options": [
-      "Học phần kỹ năng thông tin trực tuyến + học liệu mở",
-      "Chỉ in tờ rơi",
-      "Tăng phí phạt muộn",
-      "Đóng truy cập ngoài giờ"
+      "Khó khăn về hạ tầng CNTT, trang thiết bị, bản quyền tác giả,...",
+      "Dư thừa nguồn nhân lực CNTT chất lượng cao tại thư viện.",
+      "Số lượng tài nguyên thông tin quá ít để số hoá.",
+      "Sự ủng hộ tuyệt đối từ tất cả người dùng ngay từ đầu."
     ],
     "answerIndex": 0,
-    "explanation": "Kết hợp học liệu mở và đào tạo kỹ năng thông tin số là trụ cột hỗ trợ người học.",
+    "explanation": "Chuyển đổi số đòi hỏi đầu tư lớn vào máy chủ, đường truyền, phần mềm và chi phí đàm phán, mua bản quyền tài liệu số.",
     "tags": [
-      "tình huống"
-    ]
-  },
-  
-  {
-    "id": "k2",
-    "difficulty": "NB",
-    "topic": "bosung",
-    "prompt": "Chuẩn mô tả thư mục truyền thống:",
-    "options": [
-      "MARC21",
-      "JSON",
-      "CSV",
-      "YAML"
-    ],
-    "answerIndex": 0,
-    "explanation": "MARC21 là chuẩn biên mục lâu đời trong thư viện.",
-    "tags": [
-      "chuẩn",
-      "biên mục"
+      "CĐS",
+      "Thách thức"
     ]
   },
   {
-    "id": "k6",
-    "difficulty": "NB",
-    "topic": "bosung",
-    "prompt": "Nền tảng kho số mã nguồn mở phổ biến (ngoài DSpace):",
-    "options": [
-      "EPrints/Fedora Commons",
-      "Photoshop",
-      "Illustrator",
-      "Dropbox"
-    ],
-    "answerIndex": 0,
-    "explanation": "EPrints và Fedora là các lựa chọn kho số học thuật mã nguồn mở.",
-    "tags": [
-      "kho số",
-      "phần mềm"
-    ]
-  },
-  {
-    "id": "k7",
+    "id": "cdx_05",
     "difficulty": "TH",
-    "topic": "bosung",
-    "prompt": "<em>Design thinking</em> được áp dụng trong CĐS để:",
+    "topic": "nangluc",
+    "prompt": "Cán bộ thư viện cần trau dồi các kỹ năng gì trong thời kì chuyển đổi số?",
     "options": [
-      "Thấu hiểu người dùng, tạo mẫu nhanh, thử nghiệm và lặp lại",
-      "Lập ngân sách mua máy in",
-      "Viết biên bản họp",
-      "Tổ chức kho vật lý"
+      "Chuyên môn vững và kiến thức CNTT; khả năng định hướng, tư vấn thông tin cho người dùng.",
+      "Kỹ năng đóng sách, sửa chữa tài liệu giấy và bảo quản kho.",
+      "Kỹ năng thiết kế đồ hoạ chuyên nghiệp và lập trình ứng dụng di động phức tạp.",
+      "Chuyên môn sâu về lưu trữ văn thư và quản lý tài liệu hành chính nội bộ."
     ],
     "answerIndex": 0,
-    "explanation": "Tư duy thiết kế tập trung vào nhu cầu người dùng và thử nghiệm nhanh.",
+    "explanation": "Cán bộ thư viện hiện đại phải là cầu nối giữa công nghệ và người dùng. Họ cần nghiệp vụ thư viện (để tư vấn, định hướng) và kỹ năng CNTT (để vận hành hệ thống số, hỗ trợ người dùng).",
     "tags": [
-      "đặc điểm",
-      "phương pháp"
+      "Nhân lực",
+      "Kỹ năng"
     ]
   },
   {
-    "id": "k9",
-    "difficulty": "TH",
-    "topic": "bosung",
-    "prompt": "Vì sao chuẩn hoá tên tác giả/chủ đề (authority control) quan trọng?",
+    "id": "cdx_06",
+    "difficulty": "SL",
+    "topic": "yeutocauthanh",
+    "prompt": "Trong bốn yếu tố cấu thành, yếu tố nào quan trọng nhất để chuyển đổi số thư viện?",
     "options": [
-      "Giúp gom các biến thể lại, cải thiện tìm thấy và thống kê chính xác",
-      "Chỉ để đẹp mắt",
-      "Chỉ cần cho sách in",
-      "Không liên quan đến tìm kiếm"
+      "Cán bộ thư viện",
+      "Tài nguyên thông tin",
+      "Người dùng tin",
+      "Cơ sở vật chất - kỹ thuật"
     ],
     "answerIndex": 0,
-    "explanation": "Authority control đảm bảo tính nhất quán và truy hồi chính xác.",
+    "explanation": "cán bộ thư viện là yếu tố con người, là chủ thể thực hiện, vận hành, và định hướng toàn bộ quá trình CĐS. Nếu không có con người đủ năng lực và tư duy đổi mới, cơ sở vật chất và tài nguyên dù tốt đến đâu cũng không thể phát huy hiệu quả",
     "tags": [
-      "biên mục",
-      "metadata"
+      "Nhân lực",
+      "Cốt lõi"
+    ]
+  },
+  {
+    "id": "cdx_07",
+    "difficulty": "NB",
+    "topic": "loiich",
+    "prompt": "Lợi ích lớn nhất của chuyển đổi số ngành thư viện là gì?",
+    "options": [
+      "Tăng cường khả năng tiếp cận và phổ cập kiến thức.",
+      "Giảm chi phí in ấn và bảo quản tài liệu giấy.",
+      "Giảm tải công việc phân loại và sắp xếp sách cho cán bộ.",
+      "Tạo không gian thư viện hiện đại, thu hút người dùng."
+    ],
+    "answerIndex": 0,
+    "explanation": "Chuyển đổi số phá vỡ rào cản về không gian (phải đến thư viện) và thời gian (chỉ mở cửa giờ hành chính), cho phép người dùng ở bất kỳ đâu, bất kỳ lúc nào cũng có thể tiếp cận nguồn tri thức.",
+    "tags": [
+      "Lợi ích",
+      "Tiếp cận"
+    ]
+  },
+  {
+    "id": "cdx_08",
+    "difficulty": "TH",
+    "topic": "phanmem",
+    "prompt": "Phần mềm quản lý thư viện số (digital library) phổ biến?",
+    "options": [
+      "DSpace",
+      "Ubuntu",
+      "Koha",
+      "Lib LMS"
+    ],
+    "answerIndex": 0,
+    "explanation": "DSpace là phần mềm mã nguồn mở chuyên dụng để xây dựng và quản lý các kho lưu trữ số (digital repositories).",
+    "tags": [
+      "Phần mềm",
+      "Mã nguồn mở"
+    ]
+  },
+  {
+    "id": "cdx_09",
+    "difficulty": "TH",
+    "topic": "metadata",
+    "prompt": "Đối với siêu dữ liệu mô tả dạng sách (hoặc tài nguyên số), chuẩn nào thường được sử dụng để mô tả tài liệu?",
+    "options": [
+      "Dublin Core",
+      "HTML",
+      "JPEG",
+      "MARC 21"
+    ],
+    "answerIndex": 0,
+    "explanation": "Dublin Core (DC) là một bộ 15 yếu tố siêu dữ liệu cơ bản (như Tiêu đề, Tác giả, Ngày...) được thiết kế để mô tả tài nguyên web và tài liệu số một cách đơn giản, linh hoạt.",
+    "tags": [
+      "Metadata",
+      "Chuẩn"
+    ]
+  },
+  {
+    "id": "cdx_10",
+    "difficulty": "NB",
+    "topic": "ha tang",
+    "prompt": "Tài liệu thư viện số có được phép lưu trữ đám mây (Cloud Storage) không?",
+    "options": [
+      "Được phép",
+      "Không được phép, vì vi phạm an ninh dữ liệu quốc gia.",
+      "Chỉ được phép đối với các tài liệu không có bản quyền.",
+      "Chỉ được phép khi thư viện tự xây dựng Private Cloud."
+    ],
+    "answerIndex": 0,
+    "explanation": "Lưu trữ đám mây (cả Public Cloud và Private Cloud) là giải pháp công nghệ hiện đại giúp linh hoạt trong việc mở rộng dung lượng, tiết kiệm chi phí hạ tầng ban đầu. Việc này hoàn toàn được phép, miễn là đơn vị triển khai phải tuân thủ các quy định về an ninh, an toàn thông tin và chủ quyền dữ liệu.",
+    "tags": [
+      "Hạ tầng",
+      "Cloud"
     ]
   }
 ];
