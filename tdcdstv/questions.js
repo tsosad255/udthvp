@@ -125,5 +125,59 @@ window.QUESTION_BANK = [
       "chuẩn",
       "biên mục"
     ]
+  },
+  {
+    "id": "k6",
+    "difficulty": "NB",
+    "topic": "bosung",
+    "prompt": "Nền tảng kho số mã nguồn mở phổ biến (ngoài DSpace):",
+    "options": [
+      "EPrints/Fedora Commons",
+      "Photoshop",
+      "Illustrator",
+      "Dropbox"
+    ],
+    "answerIndex": 0,
+    "explanation": "EPrints và Fedora là các lựa chọn kho số học thuật mã nguồn mở.",
+    "tags": [
+      "kho số",
+      "phần mềm"
+    ]
+  },
+  {
+    "id": "k7",
+    "difficulty": "TH",
+    "topic": "bosung",
+    "prompt": "<em>Design thinking</em> được áp dụng trong CĐS để:",
+    "options": [
+      "Thấu hiểu người dùng, tạo mẫu nhanh, thử nghiệm và lặp lại",
+      "Lập ngân sách mua máy in",
+      "Viết biên bản họp",
+      "Tổ chức kho vật lý"
+    ],
+    "answerIndex": 0,
+    "explanation": "Tư duy thiết kế tập trung vào nhu cầu người dùng và thử nghiệm nhanh.",
+    "tags": [
+      "đặc điểm",
+      "phương pháp"
+    ]
+  },
+  {
+    "id": "k9",
+    "difficulty": "TH",
+    "topic": "bosung",
+    "prompt": "Vì sao chuẩn hoá tên tác giả/chủ đề (authority control) quan trọng?",
+    "options": [
+      "Giúp gom các biến thể lại, cải thiện tìm thấy và thống kê chính xác",
+      "Chỉ để đẹp mắt",
+      "Chỉ cần cho sách in",
+      "Không liên quan đến tìm kiếm"
+    ],
+    "answerIndex": 0,
+    "explanation": "Authority control đảm bảo tính nhất quán và truy hồi chính xác.",
+    "tags": [
+      "biên mục",
+      "metadata"
+    ]
   }
 ];

@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#0b1020" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f6f8ff" media="(prefers-color-scheme: light)">
-  <title>Trắc nhiệm CĐSTV</title>
+  <title>Trắc nghiệm CĐSTV</title>
   <meta name="description" content="Minigame mở đầu tọa đàm 'Nghề thư viện trong bối cảnh chuyển đổi số'" />
-  <link rel="icon" href="assets/logo.png" type="image/svg+xml">
+  <link rel="icon" href="assets/logo.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
     <div class="brand">
       <img src="assets/logo.png" alt="" class="logo" />
       <div>
-        <h1>Trắc nhiệm CĐSTV</h1>
+        <h1>Trắc nghiệm CĐSTV</h1>
         <p class="subtitle"><em>Nghề thư viện trong bối cảnh chuyển đổi số</em></p>
       </div>
     </div>
@@ -50,7 +50,7 @@
           <input id="inpMssv" name="mssv" type="text" inputmode="numeric" required placeholder="VD: 3125390000" />
         </label>
         <label class="consent">
-          <input id="inpConsent" type="checkbox" />Tôi xác nhận thông tin trên là đúng.
+          <input id="inpConsent" type="checkbox" />Tôi đồng ý gửi Họ tên, MSSV, điểm số và kết quả tới ban tổ chức để tổng hợp và xếp hạng.
         </label>
         <div class="form-actions">
           <button id="btnStart" type="button" class="btn btn-primary">Bắt đầu</button>
@@ -85,8 +85,8 @@
       </div>
     </section>
 
-    <div class="timerbar" aria-hidden="true">
-      <div id="timerBarFill" class="timerbar-fill"></div>
+    <div class="line-progress" aria-hidden="true">
+      <div id="lineProgress" class="line-progress-bar"></div>
     </div>
 
     <section id="questionCard" class="card question-card">

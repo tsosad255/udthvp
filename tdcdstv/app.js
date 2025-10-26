@@ -219,7 +219,7 @@ function onStart() {
 
   if (!name || !mssv) { alert("Vui lòng nhập đầy đủ Họ tên và MSSV."); return; }
   if (CONFIG.REQUIRE_CONSENT && !consent) {
-    alert("Vui lòng xác nhận thông tin.");
+    alert("Vui lòng xác nhận đồng ý gửi thông tin.");
     return;
   }
 
@@ -265,6 +265,8 @@ function renderCurrent() {
   // Question
   $("#qText").innerHTML = q.prompt;
   $("#qTags").textContent = (q.tags && q.tags.join(" · ")) || "";
+  const remain = state.questions.length - state.currentIndex - 1;
+  const remainEl = $("#qRemain"); if (remainEl) remainEl.textContent = remain > 0 ? `Còn ${remain} câu` : "Câu cuối";
   const ol = $("#options");
   ol.innerHTML = "";
 
@@ -297,11 +299,13 @@ function renderCurrent() {
   $("#btnNext").disabled = true;
   clearInterval(state.autoNextId);
   $("#btnNext").textContent = "Tiếp tục ▶";
+  const firstOpt = $("#options .option"); if (firstOpt) firstOpt.focus();
   unlockQuestion();
 }
 
 function onChoose(i) {
   if (state.locked) return;
+  lockQuestion();
   const q = state.questions[state.currentIndex];
   if (!q) return;
 
@@ -536,6 +540,7 @@ async function sendToSheets() {
     return;
   }
   $("#sendStatus").textContent = "Đang gửi...";
+  const btn = $("#btnSend"); if (btn) btn.disabled = true;
   const correctCount = state.answers.filter(a => a.correct).length;
   const payload = {
     sessionId: state.sessionId,
@@ -559,10 +564,10 @@ async function sendToSheets() {
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
-    $("#sendStatus").textContent = "Đã gửi kết quả.";
+    $("#sendStatus").textContent = "Đã gửi kết quả."; setTimeout(()=>{ const b=$("#btnSend"); if (b) b.disabled=false; }, 2500);
   } catch (err) {
     console.error(err);
-    $("#sendStatus").textContent = "Gửi thất bại. Hãy kiểm tra mạng.";
+    $("#sendStatus").textContent = "Gửi thất bại. Hãy kiểm tra mạng."; setTimeout(()=>{ const b=$("#btnSend"); if (b) b.disabled=false; }, 2500);
   }
 }
 
