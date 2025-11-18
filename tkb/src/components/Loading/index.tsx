@@ -1,1 +1,0 @@
-export { LoadingHoneycomb } from './Loading';
