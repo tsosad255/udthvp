@@ -1,0 +1,28 @@
+.content {
+    height: calc(100% - var(--header-height));
+    background-color: var(--content-color);
+    overflow: hidden;
+}
+
+.wrapper-page {
+    height: 100%;
+    width: 100%;
+}
+
+.entering {
+    opacity: 0;
+}
+
+.entered {
+    opacity: 1;
+    transition: opacity 100ms, transform 100ms;
+}
+
+.exiting {
+    opacity: 1;
+}
+
+.exited {
+    opacity: 0;
+    transition: opacity 100ms, transform 100ms;
+}
