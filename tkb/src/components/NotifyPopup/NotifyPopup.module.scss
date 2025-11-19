@@ -1,0 +1,144 @@
+.popup-area {
+    overlay: 1;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+
+    @media screen and (max-width: 800px) {
+        top: 10px;
+        height: fit-content;
+    }
+}
+
+.animation-wrapper {
+    height: fit-content;
+}
+
+.animation-wrapper + .animation-wrapper {
+    margin-top: calc(var(--margin-g) * 2);
+}
+
+.popup-element {
+    position: relative;
+    overflow: hidden;
+    background: var(--info-color);
+    padding: 10px;
+    border-radius: var(--border-radius-g);
+    width: 300px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--margin-g) * 2);
+    p {
+        font-weight: 700;
+        margin-right: auto;
+    }
+}
+
+.body {
+    padding: 5px;
+    margin-left: 15px;
+    color: rgba($color: #000000, $alpha: 0.6);
+}
+
+.title {
+    color: rgba($color: #000000, $alpha: 0.7);
+    text-transform: uppercase;
+}
+
+.icon,
+.close {
+    box-sizing: border-box;
+    height: 32px;
+    width: 32px;
+    text-transform: uppercase;
+    color: rgba($color: #000000, $alpha: 0.7);
+}
+
+.close {
+    height: 22px;
+    width: 22px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.animation-wrapper {
+    overflow: visible;
+    max-height: 200px;
+    height: fit-content;
+    transition: all 200ms;
+    transform-origin: bottom right;
+}
+
+.animation-wrapper.entering {
+    transform: translateX(120%);
+}
+
+.animation-wrapper.entered {
+    transform: translateX(0px);
+}
+
+.animation-wrapper.exiting {
+    animation-name: Notifyunmount;
+    animation-duration: 0.15s;
+    animation-iteration-count: 1;
+}
+
+.animation-wrapper.exited {
+    display: none;
+}
+
+.popup-element {
+    &.info {
+        background: var(--info-color);
+    }
+
+    &.success {
+        background: var(--success-color);
+    }
+    &.warning {
+        background: var(--warning-color);
+    }
+    &.error {
+        background: var(--error-color);
+    }
+
+    .btn {
+        display: flex;
+        justify-content: end;
+    }
+
+    button {
+        background-color: rgba($color: #000000, $alpha: 0.2);
+        border: none;
+        outline: none;
+        padding: 3px 5px;
+        border-radius: 3px;
+    }
+}
+
+.loading {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: inherit;
+    filter: brightness(0.5);
+}
+
+@keyframes Notifyunmount {
+    from {
+        max-height: 200px;
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    to {
+        max-height: 0px;
+        transform: scale(0);
+        opacity: 0;
+    }
+}

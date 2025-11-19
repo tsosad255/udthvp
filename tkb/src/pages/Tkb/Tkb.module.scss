@@ -1,0 +1,54 @@
+.wrapper {
+    --header-height: 30px;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    height: 100%;
+    width: 100%;
+    display: flex;
+    // background-color: var(--header-color);
+}
+
+.side-bar {
+    // border-top: 1px solid rgba($color: #000000, $alpha: 0.2);
+    height: 100%;
+    width: 300px;
+    box-sizing: border-box;
+    transition: all 0.05s;
+}
+
+.resizer {
+    min-width: 5px;
+    cursor: e-resize;
+
+    &.md {
+        background-color: var(--primary-color-1);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .calendar-wrapper {
+        width: 100% !important;
+        height: 100%;
+    }
+
+    .wrapper {
+        flex-direction: column-reverse;
+    }
+
+    .side-bar {
+        height: 250px;
+        width: calc(100% - 5px) !important;
+    }
+}
+
+.popup-save {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    > div {
+        display: flex;
+    }
+}

@@ -1,0 +1,35 @@
+.error-container {
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+    z-index: 1;
+}
+
+.error-container .error-code {
+    font-size: 10rem;
+    font-weight: 700;
+    line-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.error-btn {
+    background-color: var(--primary-color-1);
+    color: var(--content-color-1);
+    padding: 5px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-top: 20px;
+    display: inline-block;
+}
