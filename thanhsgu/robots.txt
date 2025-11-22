@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or private directories if any
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://tsosad255.com/thanhsgu/sitemap.xml
