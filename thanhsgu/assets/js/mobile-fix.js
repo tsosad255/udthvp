@@ -14,15 +14,36 @@
         setTimeout(function () {
             const lockScreen = document.querySelector('.td-lock-screen');
             if (lockScreen && typeof $ !== 'undefined') {
-                // Add touch event support for mobile
-                lockScreen.addEventListener('touchstart', function (e) {
-                    // Don't prevent default - let the click also fire
-                    // Simulate the original click behavior using jQuery
-                    $('.td-welcome').slideUp('slow');
-                    $('.td-lock-screen').animate({ opacity: 0 }, 'slow').css('pointer-events', 'none');
-                }, { passive: true });
+                let touchHandled = false;
 
-                console.log('Mobile touch event handler added to lock screen');
+                // Add touchend event support for mobile (more reliable than touchstart)
+                lockScreen.addEventListener('touchend', function (e) {
+                    // Prevent the default click event from firing
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (!touchHandled) {
+                        touchHandled = true;
+                        // Simulate the original click behavior using jQuery
+                        $('.td-welcome').slideUp('slow');
+                        $('.td-lock-screen').animate({ opacity: 0 }, 'slow').css('pointer-events', 'none');
+
+                        // Reset after animation completes
+                        setTimeout(function () {
+                            touchHandled = false;
+                        }, 1000);
+                    }
+                }, { passive: false });
+
+                // Also keep click event for desktop and as fallback
+                lockScreen.addEventListener('click', function (e) {
+                    if (!touchHandled) {
+                        $('.td-welcome').slideUp('slow');
+                        $('.td-lock-screen').animate({ opacity: 0 }, 'slow').css('pointer-events', 'none');
+                    }
+                }, { passive: false });
+
+                console.log('Mobile touch and click event handlers added to lock screen');
             }
         }, 500);
     }
